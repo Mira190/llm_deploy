@@ -288,7 +288,7 @@
 
 ---
 
-##### OpenAI 系列
+#### OpenAI 系列
 
 ##### GPT-4.1 nano
 
@@ -317,7 +317,7 @@
 
 ---
 
-##### Anthropic Claude 系列
+#### Anthropic Claude 系列
 
 ##### Claude Haiku 3.5
 
@@ -336,7 +336,7 @@
 
 ---
 
-##### Google Gemini 系列
+#### Google Gemini 系列
 
 ##### Gemini 2.5 Flash Preview
 
@@ -350,7 +350,7 @@
 
 ---
 
-##### DeepSeek 系列
+#### DeepSeek 系列
 
 ##### DeepSeek-V3
 
@@ -364,7 +364,7 @@
 
 ---
 
-##### 阿里云 Qwen 系列
+#### 阿里云 Qwen 系列
 
 ##### 通义千问-Max
 
@@ -407,7 +407,7 @@
 
 ---
 
-##### 腾讯云 混元 系列
+#### 腾讯云 混元 系列
 
 ##### 混元-lite
 
@@ -426,7 +426,7 @@
 
 ---
 
-##### Mistral AI 系列
+#### Mistral AI 系列
 
 ##### Mistral Small 3.1
 
@@ -445,7 +445,7 @@
 
 ---
 
-##### Cohere 系列
+#### Cohere 系列
 
 ##### Command R7B
 
@@ -464,7 +464,7 @@
 
 ---
 
-##### 火山方舟 Volcengine
+#### 火山方舟 Volcengine
 
 ##### Doubao-pro-32k
 
@@ -473,7 +473,7 @@
 
 ---
 
-##### OpenRouter 第三方聚合平台
+#### OpenRouter 第三方聚合平台
 
 ##### Llama 3.3 70B（OpenRouter）
 
