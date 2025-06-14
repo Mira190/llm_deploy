@@ -1,30 +1,30 @@
-## Generative AI Deployment Solution Research Report v2.0
+## LLM Deployment Solution Research Report v2.0
 
 ## Table of contents
 
 1. Executive Summary
 2. Decision Dimensions and Scoring Model
 3. Deployment Mode Overview
-4. Startup Free Credits Summary
+4. Overview of startup support and free quota
 5. Detailed plan comparison
 
-- 4.1 International/Domestic Third-Party API
-- 4.2 Cloud vendor managed reasoning
-- 4.3 Low-code/scheduling platform and framework
-- 4.4 Self-hosted open source model
+- 5.1 International/Domestic Third-Party API
+- 5.2 Cloud vendor managed inference
+- 5.3 Low-code/scheduling platform and framework
+- 5.4 Self-hosted open source model
 
 6. Three-year TCO simulation
 7. Risk and compliance assessment
 8. Implementation Roadmap
-9. Conclusion and next steps
+9. Key conclusions and action plans
 10. References
 
 ---
 
 ## 1. Executive Summary
 
-This report aims to provide a clear, phased strategic roadmap for startup teams in the deployment and selection of generative AI.
-The core conclusion is that successful AI application deployment should follow an incremental evolution path to balance innovation speed, service stability, and long-term cost-effectiveness.
+This report aims to provide a clear, phased strategic roadmap for the team to deploy and select LLM.
+Core conclusion: Through the gradual evolution from PoC → Beta → Scale, we can balance the speed of launch, cost efficiency, and compliance and security at different stages, and ultimately achieve the best TCO and data sovereignty protection through a self-hosted + API hybrid architecture at a large scale.
 
 ![Generative AI Deployment Strategy Roadmap](./pictures/roadmap.png)
 
@@ -32,19 +32,40 @@ The core conclusion is that successful AI application deployment should follow a
 
 - Recommended solution: third-party API + low-code platform (such as Dify/Coze).
 - Reason: With limited time and resources, the plug-and-play capabilities of third-party APIs combined with the visual process of low-code platforms can produce demonstrable prototypes within days to weeks, verifying business models and user needs with minimal investment. Using free quotas or startup plans from manufacturers, early costs can be almost negligible.
-  **Beta phase (public testing and iteration period)**
+
+**Beta phase (public testing and iteration period)**
+
 - Recommended solution: Migrate to mainstream cloud vendors' managed services (such as Azure OpenAI / AWS Bedrock), and integrate professional vector databases (such as Pinecone, Milvus) to build RAG applications.
 - Reason: With the growth of user volume and functional requirements, higher availability, elastic expansion and compliance assurance are required. Cloud hosting services can quickly deploy stable endpoints, seamlessly integrate with cloud monitoring, security, storage and other services, meet SLA and domestic data residency requirements, and verify medium-scale carrying capacity within a controllable cost range.
-  **Scale Phase (Scaling and Optimization Phase)**
+
+**Scale Phase (Scaling and Optimization Phase)**
+
 - Recommended solution: Build a self-hosted GPU cluster + API hybrid scheduling architecture.
-- Reason: When the call volume reaches millions/month or higher, the cost of third-party API or cloud hosting pay-as-you-go model rises rapidly. Self-hosted GPU clusters can significantly reduce unit costs at high utilization; combined with third-party APIs as an alternative for peak or special high-performance requirements, hybrid scheduling is formed to achieve a balance between cost and performance. At this stage, mature MLOps capabilities, improved monitoring and compliance audit systems are required to ensure the stability and security of large-scale services.
+- Reason: When the call volume reaches millions/month or higher, the cost of third-party API or cloud hosting pay-as-you-go model rises rapidly. Self-hosted GPU clusters can significantly reduce unit costs at high utilization; combined with third-party APIs as an alternative for peak or special high-performance needs, hybrid scheduling is formed to achieve a balance between cost and performance. At this stage, mature MLOps capabilities, improved monitoring and compliance audit systems are required to ensure the stability and security of large-scale services.
 
 ---
 
 ## 2. Decision Dimensions and Scoring Model
 
 In order to achieve a scientific and transparent selection process, a quantitative evaluation model was established, which includes the following six key dimensions. Each dimension is assigned a weight that reflects the typical priorities of start-ups.
+
 ![Decision Dimension](./pictures/decision.png)
+
+### Deployment plan scoring table (PoC stage weight setting)
+
+| Solution               | Speed ​​of launch (1–5) | Long-term cost (1–5) | Operational complexity (1–5) | Elastic expansion (1–5) | Ecosystem integrity (1–5) | Compliance and security (1–5) | Weighted total score |
+| ---------------------- | ----------------------- | -------------------- | ---------------------------- | ----------------------- | ------------------------- | ----------------------------- | -------------------- |
+| API calls + low-code   | 5                       | 4                    | 5                            | 4                       | 4                         | 3                             | 4.3                  |
+| Cloud-hosted inference | 4                       | 3                    | 4                            | 4                       | 5                         | 4                             | 3.9                  |
+
+> **Description:**
+>
+> - The weighted total score is calculated as follows: launch speed × 25% + long-term cost × 20% + operation and maintenance complexity × 15% + elastic expansion × 15% + ecological integrity × 15% + compliance and security × 10%.
+> - The example scores are for reference only. The actual scores should be adjusted based on the company's needs, the amount of support received, the team's capabilities, business risk preferences, etc.
+
+---
+
+### Dimension weight table
 
 | Dimensions                           | Weights | Description and Considerations                                                                                                                                                                                                                                                                                          |
 | ------------------------------------ | :-----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -55,21 +76,16 @@ In order to achieve a scientific and transparent selection process, a quantitati
 | Ecosystem completeness               |   15%   | Core question: How easy is it to build advanced features such as RAG and Agent? Investigate the maturity of surrounding tool chains, development libraries, and community support. A complete ecosystem can greatly reduce the difficulty of building complex AI applications and accelerate development and iteration. |
 | Compliance and Security              |   10%   | Core Questions: Does the solution meet local regulations? Is user data secure? Evaluating data residency, content review, privacy protection, encryption and audit capabilities is critical for projects targeting specific industries or regions.                                                                      |
 
-**illustrate:**
-
-- Weights can be adjusted at different stages. In the PoC stage, the weight of "online speed" can be increased to ~35%; in the Scale stage, the weights of "long-term cost" and "elastic expansion" can be increased.
-
----
-
 ## 3. Overview of deployment modes
 
 ![Deployment mode](./pictures/compare.svg)
-| Solution | Typical vendors/tools | Cost model | Speed ​​of launch | Operation and maintenance complexity | Ecosystem integrity | Compliance | Recommended stage |
-| ----------- | -------------------------------------- | ----------------------- | ----------------- | -------------------- | --------------------- | -------------------------- | -------- |
-| Third-party API | OpenAI, Anthropic, Ali Qwen, DeepSeek | On-demand token billing | ⭐⭐⭐⭐⭐ (fastest) | ⭐⭐⭐⭐⭐ (zero operation and maintenance) | ⭐⭐⭐⭐⭐ (open ecosystem) | International version ❌<br>Domestic version ✅ | PoC |
-| Cloud-hosted reasoning | Azure OpenAI, AWS Bedrock, Alibaba Bailian | On-demand token/reserved instance | ⭐⭐⭐⭐☆ | ⭐⭐⭐⭐☆ | ⭐⭐⭐⭐⭐ (closed-loop ecosystem) | ✅ (domestic nodes optional) | Beta |
-| Low code/framework | Dify, Coze, LangChain, CrewAI | Subscription + usage (cost penetration) | ⭐⭐⭐⭐⭐ (fastest) | ⭐⭐⭐⭐☆ (relatively simple) | ⭐⭐⭐⭐☆ (integrated ecosystem) | Self-hosted ✅<br>SaaS version needs to be evaluated | PoC➜Beta |
-| Self-hosted GPU | RunPod, CoreWeave, BentoML Cloud | Fixed computing cost (GPU hourly rental) | ⭐⭐☆☆☆ | ⭐☆☆☆☆ (most complex) | ⭐⭐⭐☆☆ (self-built) | ✅ (self-responsibility) | Scale |
+
+| Solution               | Typical vendors/tools                      | Cost model                               | Speed ​​of launch    | Operation and maintenance complexity        | Ecosystem integrity                | Compliance                                           | Recommended stage |
+| ---------------------- | ------------------------------------------ | ---------------------------------------- | -------------------- | ------------------------------------------- | ---------------------------------- | ---------------------------------------------------- | ----------------- |
+| Third-party API        | OpenAI, Anthropic, Ali Qwen, DeepSeek      | On-demand token billing                  | ⭐⭐⭐⭐⭐ (fastest) | ⭐⭐⭐⭐⭐ (zero operation and maintenance) | ⭐⭐⭐⭐⭐ (open ecosystem)        | International version ❌<br>Domestic version ✅      | PoC               |
+| Cloud-hosted reasoning | Azure OpenAI, AWS Bedrock, Alibaba Bailian | On-demand token/reserved instance        | ⭐⭐⭐⭐☆            | ⭐⭐⭐⭐☆                                   | ⭐⭐⭐⭐⭐ (closed-loop ecosystem) | ✅ (domestic nodes optional)                         | Beta              |
+| Low code/framework     | Dify, Coze, LangChain, CrewAI              | Subscription + usage (cost penetration)  | ⭐⭐⭐⭐⭐ (fastest) | ⭐⭐⭐⭐☆ (relatively simple)               | ⭐⭐⭐⭐☆ (integrated ecosystem)   | Self-hosted ✅<br>SaaS version needs to be evaluated | PoC➜Beta          |
+| Self-hosted GPU        | RunPod, CoreWeave, BentoML Cloud           | Fixed computing cost (GPU hourly rental) | ⭐⭐☆☆☆              | ⭐☆☆☆☆ (most complex)                       | ⭐⭐⭐☆☆ (self-built)              | ✅ (self-responsibility)                             | Scale             |
 
 **illustrate:**
 
@@ -78,28 +94,24 @@ In order to achieve a scientific and transparent selection process, a quantitati
 - Low-code platform/framework: Visualized processes or modular components, built-in RAG/Agent functions, suitable for rapid verification; SaaS version requires evaluation of data storage; self-hosted version or open source framework can be fully controlled.
 - Self-hosted GPU: Lowest long-term cost, highly customizable, highest data sovereignty, but with the highest technical threshold and operation and maintenance complexity, suitable for mature stages and high-concurrency scenarios.
 
----
+## 4. Overview of Entrepreneurship Support and Free Quotas
 
-## 4. Startup Free Credits and related benefits summary
+| Name/Manufacturer                       | Plan/Project                                           | Amount (RMB ¥ / USD \$ / Free)                                                       | Application points (including application difficulty)                                                      | Support content/usage suggestions                                                                                                                                                                                                                                                       |
+| --------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| AWS Activate                            | Startup Acceleration (including Generative AI Special) | ¥72,500–¥2,175,000 (\~\$1k–\$300k)                                                   | Difficulty: Medium; New startups required; VC/incubator recommendations available                          | - Special quota can be used to test AI hardware such as Trainium/Inferentia<br>- Covers all AWS cloud services and AI/ML services (such as Amazon Bedrock, SageMaker)<br>- Provides technical support, training, and guidance                                                           |
+| Azure Founders Hub                      | Entrepreneur Center                                    | ¥36,000–¥1,087,500 (\~\$5k–\$150k)                                                   | Application difficulty: low; no VC recommendation required; renewal based on usage activity                | - Credits can be used for various Azure services (Azure OpenAI, storage, computing, database, etc.)<br>- Includes GitHub Enterprise, Microsoft 365 developer licenses<br>- Provides technical guidance and entrepreneurial ecosystem connections                                        |
+| Google for Startups                     | Cloud Program                                          | ¥14,500–¥2,537,500 (\~\$2k–\$350k)                                                   | Application difficulty: high; VC recommendation required; business/technical plan submitted in stages      | - Start Tier (\$2k) is suitable for the idea stage<br>- Scale Tier (\$200k, two years) requires financing and scale conditions<br>- AI First (\$350k) covers \$250k usage in the first year, and discounted renewal in the second year<br>- Covers GCP AI/ML services such as Vertex AI |
+| Alibaba Cloud MARS Entrepreneur Program | Cloud Discount Coupons                                 | ¥3.5k–¥1 million                                                                     | Application Difficulty: Low–Medium; Applicants are self-employed or start-ups                              | - AI Resource Subsidy: Trillions of tokens-level call subsidies, thousands of hours of technical support<br>- Expert 1v1 docking service, technical training camp, investment and financing resource docking<br>- Covers AI services such as Tongyi Qianwen Model and DashVector        |
+| Tencent Cloud Lite model is free        | Hunyuan Lite / Intelligent Agent Development Platform  | Free tokens, character capacity, knowledge base, etc.                                | Application difficulty: low; just complete real-name authentication and activate                           | - Hunyuan Lite model is permanently free, no quota limit<br>- 500,000 tokens (2 months) will be given for the first opening of the Intelligent Agent Development Platform<br>- Suitable for concept verification and early development testing                                          |
+| Baidu Qianfan Entrepreneur Program      | Entrepreneur Program                                   | Free/Enterprise Special 50 million free tokens                                       | Application difficulty: low-medium; after enterprise certification, you can apply for flagship model quota | - ERNIE Speed/Lite is completely free and has no usage restrictions<br>- Enterprise users can apply for ERNIE3.5 flagship model 50 million tokens free call<br>- Support vector library integration, Agent Builder low-code development                                                 |
+| Anthropic for Startups                  | Claude API Verification                                | Free API credits, higher rate limits, community support, exclusive event invitations | Difficulty: High; usually requires VC/accelerator endorsement                                              | - Covers Claude 3 series model calls<br>- Suitable for verifying Claude model capabilities and early prototype development                                                                                                                                                              |
+| Mistralship (Mistral AI)                | La Plateforme Visit                                    | 6-month startup plan, providing about $30k credits                                   | Application difficulty: medium; in line with the early financing stage                                     | - PoC stage to verify the capabilities of Mistral model; Beta stage evaluation and comparison with other models to decide on long-term cooperation                                                                                                                                      |
+| Vercel AI Accelerator                   | Front-end + AI application acceleration                | \~\$4,000,000+ credits                                                               | Application difficulty: high; project matching conditions                                                  | - Suitable for teams that quickly build front-end + AI applications<br>- End-to-end verification with full range of credits                                                                                                                                                             |
+| Together AI Studio                      | Comprehensive cloud credits                            | Commitment of \$1,000,000 funding and >\$600,000 cloud credits                       | Application difficulty: high; pay attention to the project application period                              | - Teams with innovative AI application ideas can apply and receive comprehensive support                                                                                                                                                                                                |
 
-| Name/Manufacturer                       | Plan/Project                                           | Amount (RMB ¥ / USD $ / Free)                                                        | Application Points                                                             | Support Content/Usage Suggestions                                                                                                                                                                                                                                                      |
-| --------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| AWS Activate                            | Startup Acceleration (including Generative AI Special) | ¥72,500–¥2,175,000 (~$1k–$300k)                                                      | New startup conditions; VC/incubator recommendations available                 | - Special quota can be used to test AI hardware such as Trainium/Inferentia\<br\>- Covers all AWS cloud services and AI/ML services (such as Amazon Bedrock, SageMaker)\<br\>- Provides technical support, training and guidance                                                       |
-| Azure Founders Hub                      | Entrepreneur Center                                    | ¥36,000–¥1,087,500 (~$5k–$150k)                                                      | No VC recommendation required; renewal based on usage activity                 | - Credits can be used for various Azure services (Azure OpenAI, storage, computing, database, etc.)\<br\>- Includes GitHub Enterprise, Microsoft 365 developer licenses\<br\>- Provides technical guidance and entrepreneurial ecosystem connections                                   |
-| Google for Startups                     | Cloud Program                                          | ¥14,500–¥2,537,500 (~$2k–$350k)                                                      | VC recommendation required; business/technical plans to be submitted in phases | - Start Tier ($2k) for ideation phase\<br\>- Scale Tier ($200k, two-year term) requires financing and scale conditions\<br\>- AI First ($350k) covers $250k of usage in the first year, discounted renewal in the second year\<br\>- Covers Vertex AI and other GCP AI/ML services     |
-| Alibaba Cloud MARS Entrepreneur Program | Cloud Discount Coupons                                 | ¥3.5k–¥1 million                                                                     | Individual businesses or start-ups can apply                                   | - AI resource subsidies: trillions of tokens-level call subsidies, thousands of hours of technical support\<br\>- Expert 1v1 docking service, technical training camp, investment and financing resource docking\<br\>- Covers AI services such as Tongyi Qianwen Model and DashVector |
-| Tencent Cloud Lite model is free        | Hunyuan Lite / Intelligent Agent Development Platform  | Free tokens, character capacity, knowledge base, etc.                                | Complete real-name authentication and activate                                 | - Hunyuan Lite model is permanently free, with no quota limit\<br\>- 500,000 tokens (2 months) will be given for the first opening of the Intelligent Agent Development Platform\<br\>- Suitable for concept verification and early development testing                                |
-| Baidu Qianfan Entrepreneur Program      | Entrepreneur Program                                   | Free/Enterprise Special 50 million Tokens                                            | After enterprise certification, you can apply for flagship model quota         | - ERNIE Speed/Lite is completely free and has no usage restrictions\<br\>- Enterprise users can apply for ERNIE3.5 flagship model 50 million Tokens for free call\<br\>- Support vector library integration, Agent Builder low-code development                                        |
-| Anthropic for Startups                  | Claude API Verification                                | Free API credits, higher rate limits, community support, exclusive event invitations | Usually requires VC/accelerator endorsement                                    | - Covers Claude 3 series model calls\<br\>- Suitable for verifying Claude model capabilities and early prototype development                                                                                                                                                           |
-| Mistralship (Mistral AI)                | La Plateforme Visit                                    | 6-month startup plan, providing about $30k credits                                   | In line with the early stage of financing                                      | - PoC stage to verify the capabilities of Mistral model; Beta stage evaluation and comparison with other models to decide on long-term cooperation                                                                                                                                     |
-| Vercel AI Accelerator                   | Front-end + AI application acceleration                | \~$4,000,000+ credits                                                                | Project matching conditions; cycle about 6 weeks, about 40 teams               | - Suitable for teams that quickly build front-end + AI applications\<br\>- End-to-end verification with full range of credits                                                                                                                                                          |
-| Together AI Studio                      | Comprehensive cloud credits                            | Commitment of $1,000,000 in funding and \>$600,000 in cloud credits                  | Pay attention to the project application period                                | - Teams with innovative AI application ideas can apply and receive comprehensive support                                                                                                                                                                                               |
+### 4.1. Detailed analysis of international cloud platform benefits
 
----
-
-## Detailed analysis of international cloud platform benefits
-
-### AWS Activate – Significant Improvement in Generative AI
+#### AWS Activate – Significant Improvement in Generative AI
 
 - **Special Funding**: Up to $300,000 (approximately ¥2.175 million) specifically for testing AI acceleration hardware such as AWS Trainium/Inferentia.
 - **Grading application conditions**:
@@ -112,7 +124,7 @@ In order to achieve a scientific and transparent selection process, a quantitati
 - Complete company website, business registration information, team introduction and other materials.
 - **Application website:** https://aws.amazon.com/activate/
 
-### Azure Founders Hub – Lowest threshold, participation score
+#### Azure Founders Hub – Lowest threshold, participation score
 
 - **Initial amount**: Starting level $5,000 (approximately ¥36,000).
 - **Growth Level**: You can apply for up to $25,000 (approximately ¥180,000), and you need to complete a verification checklist (such as usage, verification cases, etc.).
@@ -123,7 +135,7 @@ In order to achieve a scientific and transparent selection process, a quantitati
 - Credits can be used for various Azure services, including Azure OpenAI, storage, computing, databases, etc.
 - **Application website:** https://www.microsoft.com/en-us/startups
 
-### Google for Startups – Highest Funding, AI-First Strategy
+#### Google for Startups – Highest Funding, AI-First Strategy
 
 - **Three-tier support system**:
 
@@ -141,9 +153,9 @@ In order to achieve a scientific and transparent selection process, a quantitati
 
 ---
 
-## China Cloud Platform Support Plan
+### 4.2 China Cloud Platform Support Plan
 
-### Alibaba Cloud MARS Entrepreneur Program – Major Upgrade in 2025
+#### Alibaba Cloud MARS Entrepreneur Program – Major Upgrade in 2025
 
 - **Release background**: In April 2025, the "MARS Entrepreneur Program" was newly upgraded, aiming to support at least 1,000 start-ups within one year and provide millions of AI resource subsidies.
 - **Core Support Content**:
@@ -160,7 +172,7 @@ In order to achieve a scientific and transparent selection process, a quantitati
 - Participate in official training camps and ecological activities to obtain more technical and financing support.
 - **Application website:** https://help.aliyun.com/document_detail/2698335.html
 
-### Tencent Cloud Lite model is free
+#### Tencent Cloud Lite Model Free Plan
 
 - **Free form**: The Hunyuan Lite model is permanently free, with no usage limit, and the API input and output length is upgraded from 4k to 256k.
 - **Free Quota**:
@@ -174,9 +186,9 @@ In order to achieve a scientific and transparent selection process, a quantitati
 - Free quotas are used first, and consumption can be checked on the billing management page of the intelligent agent development platform.
 - Suitable for startups or individuals to conduct proof of concept and early development testing.
 - Free resources that are not used up after the expiration date will become invalid. It is recommended to use them in time or purchase renewals according to needs.
-- **Application website:**https://cloud.tencent.com/document/product/1729/97731
+- **Application website:** https://cloud.tencent.com/document/product/1729/97731
 
-### Baidu Qianfan Entrepreneur Program
+#### Baidu Qianfan Entrepreneur Program
 
 - **Totally Free Strategy**: ERNIE Speed/Lite models are completely free for all users to use, with no usage restrictions.
 - **Enterprise Special Quota**: After enterprise certification, you can apply for a free quota of 50 million Tokens of the ERNIE3.5 flagship model for use in production or testing environments.
@@ -187,16 +199,16 @@ In order to achieve a scientific and transparent selection process, a quantitati
 
 ---
 
-## Benefits for AI-focused service providers
+### 4.3 Benefits for AI Specialized Service Providers
 
-### Anthropic for Startups
+#### Anthropic for Startups
 
 - **Support content**: Launch startup programs with VC partners, provide free API credits, higher rate limits, community support, exclusive founder event invitations, etc.
 - **Application requirements**: Usually endorsed by a cooperating VC or accelerator, and submission of project plans and team information.
 - **Usage suggestion**: Apply for credits when validating the capabilities of the Claude model; compare performance and cost with other models during the Beta phase.
 - **Application website:** https://www.anthropic.com/startups
 
-### Mistralship (Mistral AI)
+#### Mistralship (Mistral AI)
 
 - **Support Content**: 6-month startup program providing ~$30k credits to several startups for La Plateforme; 1:1 support; early access to new models and products.
 - **Application conditions**: The team must meet the early financing stage and submit AI application scenarios and technical solutions.
@@ -205,9 +217,9 @@ In order to achieve a scientific and transparent selection process, a quantitati
 
 ---
 
-## Benefits for Professional Accelerator Entrepreneurs
+### 4.4 Benefits for Professional Accelerator Entrepreneurs
 
-### Vercel AI Accelerator
+#### Vercel AI Accelerator
 
 - **Project duration**: Approximately 6 weeks, providing over $4,000,000 in credits and resources to ~40 teams.
 - **Main Benefits**:
@@ -218,7 +230,7 @@ In order to achieve a scientific and transparent selection process, a quantitati
 - **Usage suggestions**: Teams that intend to quickly build front-end + AI applications can apply for end-to-end verification with full range of credits.
 - **Application website:** https://vercel.com/ai-accelerator
 
-### Together AI Studio
+#### Together AI Studio
 
 - **Support**: $1,000,000 in funding and >$600,000 in cloud credits from OpenAI, AWS, Google Cloud, Azure, and more.
 - **Usage suggestions**: Teams with innovative AI application ideas can follow this project and apply for comprehensive support.
@@ -226,9 +238,9 @@ In order to achieve a scientific and transparent selection process, a quantitati
 
 ## 5. Detailed plan comparison
 
-#### 5.1 International/Domestic Third-Party API
+### 5.1 International/Domestic Third-Party API
 
-##### 5.1.1 Pricing Overview
+#### 5.1.1 Pricing Overview
 
 | Platform / Model                      | Context Window (Tokens) | Input ¥ / 1k Tokens                         | Output ¥ / 1k Tokens                    | Features and Model Value                                                                                                                                  |
 | ------------------------------------- | ----------------------- | ------------------------------------------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -251,10 +263,10 @@ In order to achieve a scientific and transparent selection process, a quantitati
 | DeepSeek-V3                           | 64K                     | 0.00200 (miss)                              | 0.00800                                 | General MoE, cost-effective, excellent Chinese comprehension and reasoning; cache hit can be reduced to 0.00051.                                          |
 | DeepSeek-R1                           | 64K                     | 0.00400 (missed)                            | 0.01600                                 | Optimized version for complex reasoning, suitable for technical problem solving and deep thinking.                                                        |
 | **Alibaba Cloud (Qwen)**              |                         |                                             |                                         |                                                                                                                                                           |
-| Tongyi Qianwen-Max                    | 131,072                 | ¥0.0024                                     | ¥0.0096                                 | Flagship model, suitable for complex tasks, with the strongest capabilities                                                                               |
-| Tongyi Qianwen-Plus                   | 131,072                 | ¥0.0008                                     | ¥0.0020                                 | Balanced effect, speed and cost, suitable for most general tasks                                                                                          |
-| Tongyi Qianwen-Turbo                  | 1,000,000               | ¥0.0003                                     | ¥0.0006                                 | Extremely cost-effective, fast speed, low cost, suitable for simple tasks                                                                                 |
-| Tongyi Qianwen-Long                   | 10,000,000              | ¥0.0005                                     | ¥0.0020                                 | Supports very long texts, suitable for large-scale analysis and long document processing scenarios                                                        |
+| Tongyi Qianwen-Max                    | 131,072                 | 0.0024                                      | 0.0096                                  | Flagship model, suitable for complex tasks, with the strongest capabilities                                                                               |
+| Tongyi Qianwen-Plus                   | 131,072                 | 0.0008                                      | 0.0020                                  | Balanced effect, speed and cost, suitable for most general tasks                                                                                          |
+| Tongyi Qianwen-Turbo                  | 1,000,000               | 0.0003                                      | 0.0006                                  | Extremely cost-effective, fast, low cost, suitable for simple tasks                                                                                       |
+| Tongyi Qianwen-Long                   | 10,000,000              | 0.0005                                      | 0.0020                                  | Supports very long texts, suitable for large-scale analysis and long document processing scenarios                                                        |
 | **Baidu Qianfan**                     |                         |                                             |                                         |                                                                                                                                                           |
 | ERNIE Speed/Lite                      | 8K/128K                 | 0.00000 (Free)                              | 0.00000 (Free)                          | Lightweight and zero-cost, suitable for large-scale free trials and PoC.                                                                                  |
 | ERNIE 4.5 Turbo                       | TBC                     | 0.00080                                     | 0.00320                                 | Cost-effective general model, supports tool calls, commonly used in enterprises.                                                                          |
@@ -280,138 +292,138 @@ In order to achieve a scientific and transparent selection process, a quantitati
 
 ---
 
-### OpenAI Series
+##### OpenAI Series
 
-#### GPT-4.1 nano
+##### GPT-4.1 nano
 
 - **Positioning and Tasks**: Ultra-low latency and ultra-low cost, suitable for edge computing, lightweight Agent, and Webhook callback scenarios that require extremely high response speed.
 - **Cost-effectiveness analysis**: Only ¥0.00073/1k input, ¥0.00290/1k output, irreplaceable under millisecond-level interaction requirements.
 
-#### GPT-4.1 mini
+##### GPT-4.1 mini
 
 - **Positioning and Tasks**: A choice that balances intelligence and speed, suitable for medium-complexity customer service conversations, FAQ robots, and content review pipelines.
 - **Cost-effectiveness analysis**: ¥0.00290 /1k input, ¥0.01160 /1k output, slightly higher than nano but with significantly improved inference quality.
 
-#### GPT-4.1
+##### GPT-4.1
 
 - **Positioning and Mission**: Flagship intelligence, oriented to long text understanding, legal/financial document analysis, and in-depth research report writing.
 - **Cost-effectiveness analysis**: ¥0.01450 /1k input, ¥0.05800 /1k output, suitable for core businesses with sufficient budget and quality priority.
 
-#### o3
+##### o3
 
 - **Localization and Tasks**: Top-notch multimodal reasoning models, good at code generation, mathematical proofs, scientific experiment design, and image understanding.
 - **Cost-effectiveness analysis**: The price is the same as GPT-4.1 (¥0.01450/¥0.05800), but it has obvious advantages in professional benchmarks (MATH, Codeforces, ImageNet).
 
-#### o4 mini
+##### o4 mini
 
 - **Location and Task**: Lightweight reasoning players with strong math, coding and visual understanding skills, suitable for cost-sensitive complex tasks.
 - **Cost-effectiveness analysis**: ¥0.00798/1k input, ¥0.03190/1k output, ≈45% price reduction compared to o3, while still maintaining 80%+ performance.
 
 ---
 
-### Anthropic Claude Series
+##### Anthropic Claude Series
 
-#### Claude Haiku 3.5
+##### Claude Haiku 3.5
 
 - **Positioning and Task**: Extremely high-throughput, low-latency conversational model, designed for real-time customer service, content review, and fast summarization.
 - **Cost-effectiveness analysis**: ¥0.00580/1k input, ¥0.02900/1k output, which is continuously stable in high-concurrency scenarios.
 
-#### Claude Sonnet 4
+##### Claude Sonnet 4
 
 - **Positioning and tasks**: An enterprise-level balanced flagship, suitable for RAG, search recommendation, and multi-round hybrid text + chart analysis.
 - **Price/performance analysis**: ¥0.02180/1k input, ¥0.10875/1k output, providing high-quality experience for multi-modal and complex applications.
 
-#### Close Work 4
+##### Close Work 4
 
 - **Positioning and Mission**: Top thinker, focusing on cutting-edge research, strategic planning, cross-disciplinary comprehensive Q&A and creative writing.
 - **Cost-effectiveness analysis**: ¥0.10875/1k input, ¥0.54375/1k output, reserved only for the most demanding inference quality scenarios.
 
 ---
 
-### Google Gemini Series
+##### Google Gemini Series
 
-#### Gemini 2.5 Flash Preview
+##### Gemini 2.5 Flash Preview
 
 - **Location and Task**: Low-cost long context + hybrid reasoning, supporting text/image/video/audio input, suitable for large-scale batch multimodal pipelines.
 - **Cost-effectiveness analysis**: ¥0.00109/1k input, ¥0.00435/1k non-inference output, ¥0.02538/1k inference output, the optimal throughput cost.
 
-#### Gemini 2.5 Pro
+##### Gemini 2.5 Pro
 
 - **Location and Task**: The flagship of multimodal deep reasoning, supporting complex document understanding, code auditing, cross-media search and RAG.
 - **Cost-effectiveness analysis**: ¥0.00906–¥0.01813 /1k input, ¥0.07250–¥0.10875 /1k output, unique pricing supports dynamic segmentation, taking into account short/long prompts.
 
 ---
 
-### DeepSeek Series
+##### DeepSeek Series
 
-#### DeepSeek-V3
+##### DeepSeek-V3
 
 - **Positioning and Task**: Cost-effective general Chinese MoE, suitable for article generation, summarization and general knowledge question and answering.
 - **Cost-effectiveness analysis**: ¥0.00200/1k input, ¥0.00800/1k output for a miss; reduced to ¥0.00051 for a cache hit, significantly saving the cost of repeated queries.
 
-#### DeepSeek-R1
+##### DeepSeek-R1
 
 - **Positioning and Tasks**: An enhanced version for complex reasoning, optimized for technical document analysis, scientific research assistance, and rigorous logical reasoning scenarios.
 - **Cost-effectiveness analysis**: ¥0.00400 /1k input, ¥0.01600 /1k output, performance improvement to match professional needs.
 
 ---
 
-### Alibaba Cloud Qwen Series
+##### Alibaba Cloud Qwen Series
 
-#### General Questions-Max
+##### Thousand Questions on Tongyi-Max
 
 - **Positioning and Mission**: Flagship complex task expert, focusing on financial auditing, legal compliance, and in-depth analysis of scientific research literature.
 - **Cost-effectiveness analysis**: ¥0.0024/1k input, ¥0.0096/1k output, achieving top-level model capabilities at a very low cost.
 
-#### Tongyi Qianwen-Plus
+##### Tongyi Qianwen-Plus
 
 - **Positioning and Tasks**: A balanced all-around model suitable for most mixed business scenarios—dialogue, summary, classification, RAG.
 - **Cost-effectiveness analysis**: ¥0.0008/1k input, ¥0.0020/1k output, it is the most widely used "preferred base" in China.
 
-#### Tongyi Qianwen-Turbo
+##### Tongyi Qianwen-Turbo
 
 - **Positioning and tasks**: An extremely fast and low-cost pipeline player, suitable for high-concurrency log decomposition, indicator extraction, and structured field extraction.
 - **Cost-effectiveness analysis**: ¥0.0003/1k input, ¥0.0006/1k output, the lowest unit cost among all business models.
 
-#### Tongyi Qianwen-Long
+##### Thousand Questions on Tongyi-Long
 
 - **Positioning and Tasks**: An expert in processing very long texts, supporting 10M Tokens, and specially designed for building indexes and full-text retrieval for large-scale documents.
 - **Cost-effectiveness analysis**: ¥0.0005/1k input, ¥0.0020/1k output, solving ultra-large contexts with the lowest cost.
 
 ---
 
-### Baidu Qianfan ERNIE series
+#### Baidu Qianfan ERNIE series
 
-#### ERNIE Speed / Lite
+##### ERNIE Speed / Lite
 
 - **Positioning and tasks**: Zero-cost entry, suitable for PoC, developer learning, and lightweight batch text processing.
 - **Cost-effectiveness analysis**: Permanently free, no token restrictions, the first choice for trial and error and learning.
 
-#### ERNIE 4.5 Turbo
+##### ERNIE 4.5 Turbo
 
 - **Positioning and Mission**: Cost-effective enterprise-level general workhorse, supporting tool calls, plug-ins, and RAG processes.
 - **Price/performance analysis**: ¥0.00080 /1k input, ¥0.00320 /1k output, providing professional-level features at a price close to free.
 
-#### ERNIE 4.5
+##### ERNIE 4.5
 
 - **Positioning and Mission**: Chinese multimodal flagship, good at image + text, long document understanding, and cultural context analysis.
 - **Cost-effectiveness analysis**: ¥0.00400/1k input, ¥0.01600/1k output, providing leading results for core Chinese scenarios.
 
 ---
 
-### Tencent Cloud Hunyuan Series
+##### Tencent Cloud Hunyuan Series
 
-#### Hunyuan-lite
+##### Hunyuan-lite
 
 - **Positioning and Mission**: Permanently free long context, suitable for PoC, education and large-scale basic services.
 - **Cost-Effectiveness Analysis**: ¥0.00000 /1k, extremely cost-effective; but the reasoning depth is not as good as the flagship version.
 
-#### Hunyuan-TurboS
+##### Hunyuan-TurboS
 
 - **Positioning and Mission**: Flagship with trillion parameters, high-concurrency intelligent question-answering and document parsing.
 - **Cost-effectiveness analysis**: 1 million tokens are free in the first month, ¥0.00080/1k input, ¥0.00200/1k output, taking into account both cost and performance.
 
-#### Hunyuan-T1
+##### Hunyuan-T1
 
 - **Positioning and tasks**: General main model, oriented to complex conversations, full document understanding, and intelligent recommendations.
 - **Cost-effectiveness analysis**: ¥0.00100 /1k input, ¥0.00400 /1k output, it is the "economic flagship" of the Hunyuan series.
@@ -420,54 +432,54 @@ In order to achieve a scientific and transparent selection process, a quantitati
 
 Mistral AI Series
 
-#### Mistral Small 3.1
+##### Mistral Small 3.1
 
 - **Location and Task**: A lightweight multilingual assistant suitable for basic tasks such as translation, summarization, and classification.
 - **Cost-effectiveness analysis**: ¥0.00073 /1k input, ¥0.00218 /1k output, the startup cost is extremely low.
 
-#### Mistral Medium 3
+##### Mistral Medium 3
 
 - **Position and Task**: Coding and STEM domain expert, often used in technical documentation generation and analysis.
 - **Performance-price ratio analysis**: ¥0.00290 /1k input, ¥0.01450 /1k output, the performance is close to the flagship but the price is better.
 
-#### Mistral Large 2
+##### Mistral Large 2
 
 - **Localization and Tasks**: Open source flagship contender, suitable for the most demanding multimodal and complex reasoning tasks.
 - **Cost-effectiveness analysis**: ¥0.02900 /1k input, ¥0.08700 /1k output, providing a free alternative for teams that need top-notch capabilities.
 
 ---
 
-### Cohere Series
+##### Cohere Series
 
-#### Command R7B
+##### Command R7B
 
 - **Positioning & Mission**: Lightweight RAG prototype build, lowest cost test model.
 - **Price/performance analysis**: ¥0.00027 /1k input, ¥0.00109 /1k output, an ideal choice for building RAG PoC.
 
-#### Command R
+##### Command R
 
 - **Positioning and tasks**: General enterprise-level RAG, suitable for knowledge base question answering and intelligent search.
 - **Cost-effectiveness analysis**: ¥0.00109/1k input, ¥0.00435/1k output, balancing performance and cost.
 
-#### Command A
+##### Command A
 
 - **Location and Task**: Dedicated to Agentic AI, supporting multi-step tool calls and complex business processes.
 - **Cost-effectiveness analysis**: ¥0.01813/1k input, ¥0.07250/1k output, providing exclusive optimization for complex Agent processes.
 
 ---
 
-### Volcengine
+##### Volcengine
 
-#### Doubao-pro-32k
+##### Doubao-pro-32k
 
 - **Positioning and Mission**: C-end large-scale content generation engine, suitable for social, recommendation, and creation platforms.
 - **Cost-effectiveness analysis**: ¥0.00080/1k input, ¥0.00200/1k output, achieving extremely low cost under large traffic.
 
 ---
 
-### OpenRouter third-party aggregation platform
+##### OpenRouter third-party aggregation platform
 
-#### Llama 3.3 70B（OpenRouter）
+##### Llama 3.3 70B（OpenRouter）
 
 - **Positioning and Mission**: Open source flagship "one-click trial", no need to deploy by yourself.
 - **Cost-effectiveness analysis**: ¥0.00051/1k input, ¥0.00181/1k output, with convenience as the core value, suitable for PoC and small-scale experiments.
@@ -479,7 +491,7 @@ Mistral AI Series
 - Billing is based on input/output token usage, without the need for upfront infrastructure investment.
 - In the early stage, when the call volume is low, the cost is negligible (free quota can be used); as the call volume increases linearly, the cost rises rapidly.
 - Cache input pricing and volume discounts: Many providers offer significant discounts for cache input and batch processing, which can effectively reduce the cost of repetitive tasks. For example, Alibaba Cloud Qwen series can halve the batch processing fee, and cache tokens are charged at 40% of the input cost. DeepSeek's cache hit price is much lower than the cache miss price.
-- If the monthly call volume reaches hundreds of millions or more, you need to evaluate the turning point of API cost and self-hosting cost in advance.
+- If the monthly call volume reaches hundreds of millions or more, it is necessary to evaluate the turning point of API cost and self-hosting cost in advance.
 
 - **Online speed and deployment complexity**
 
@@ -496,7 +508,7 @@ Mistral AI Series
 
 - **Free Quota**
 
-- International vendors: The free quota is limited and mostly depends on startups or project applications; there are rate/usage restrictions. Platforms such as DeepSeek provide daily free message quotas.
+- International manufacturers: The free quota is limited and mostly depends on startup or project applications; there are rate/usage restrictions.
 - Domestic manufacturers: often have free or low-price strategies, such as some free models and free token quotas.
 
 - **Compliance**
@@ -521,7 +533,7 @@ Mistral AI Series
 
 ---
 
-### 5.2. Cloud vendor hosted inference
+### 5.2. Analysis of cloud-hosted inference solutions
 
 #### 5.2 Comparison of Hosted Inference Services
 
@@ -634,24 +646,9 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 ---
 
-### How to effectively manage the total cost of cloud deployment?
+## 5.3 Evaluation of low-code and framework tools
 
-1. **Architecture optimization**: Rationally design the RAG and Agent architecture to reduce unnecessary data transmission and repeated calculations; try to communicate within the cloud platform's internal network.
-2. **Data lifecycle management**: Regularly clean up logs and storage data that are no longer needed to avoid the accumulation of long-term storage costs; archive or delete old version models or snapshots that are no longer used.
-3. **Service selection**: Give priority to using the cloud platform's built-in services and internal networks to reduce the cost of public network outbound traffic; select the appropriate storage type (such as hot and cold tiering) based on the access mode.
-4. **Elastic Scaling**: Enable automatic scaling to ensure that you only pay for the resources you actually use; automatically reduce the instance size during low traffic hours to save costs.
-5. **Utilize free quota**: During the PoC and Beta stages, actively apply for and utilize free or discounted quotas from various cloud vendors; avoid over-reliance on free quotas in production environments.
-6. **Budget and Alert**: Set detailed budgets, spending limits, and alert policies on the cloud platform; monitor cost indicators in real time, and optimize or adjust resource allocation in a timely manner when the budget approaches the threshold.
-7. **Performance optimization**: Introduce technologies such as caching (such as embedding caching), mixed-precision reasoning, and batch processing to improve unit resource utilization and reduce reasoning costs.
-8. **Log and monitoring optimization**: Rationally configure log levels and retention periods to avoid excessive log ingestion and storage costs; use sampling or hierarchical storage strategies.
-9. **Security and compliance automation**: Use automated tools for security scanning and compliance checks to reduce manual audit costs; configure appropriate access control and audit logs.
-10. **Regular review**: Regularly review the deployment architecture and cost structure, and optimize them based on business growth or changes; evaluate newly released cloud services or models to determine whether there are better options.
-
----
-
-## 5.3 Low-code/scheduling platform and framework
-
-## 5.3.1 Platform and framework comparison (including price information)
+## 5.3.1 Platform and Framework Comparison
 
 | Platform/Framework | Type                                        | Main Features                                                                                   | Typical Users                               | Pricing Model and Latest Price (June 2025)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Pros and Cons Summary                                                                                                                              |
 | ------------------ | ------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -666,9 +663,8 @@ In addition to the basic model inference and dedicated resource costs, the total
 | Flowise            | Workflow platform (open source self-hosted) | Visual drag-and-drop process orchestration, support for Agentic RAG, multi-tool integration     | Automation developers                       | Completely free and open source, a commercial version may be launched in the future                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | ✅ User-friendly and rich in components; ❌ Slightly less flexible, complex scenarios still require code support                                   |
 
 #### 5.3.2 Detailed description
----
 
-### Dify detailed function breakdown
+#### Dify detailed function breakdown
 
 - **Visual Application Orchestration**
 
@@ -712,7 +708,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 - **Multi-language and localization**
 
-- Excellent Chinese support: built-in Chinese word segmentation, Chinese document parsing and retrieval optimization; Prompt template examples are multi-language compatible.
+- Excellent Chinese support: built-in Chinese word segmentation, Chinese document parsing and retrieval optimization; multi-language compatibility in Prompt template examples.
 - Internationalization: The interface supports multiple languages, which can adapt to the multi-language usage scenarios of the team.
 
 - **Typical application scenarios**
@@ -730,7 +726,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 ---
 
-### Coze detailed function breakdown
+#### Coze detailed function breakdown
 
 - **SaaS model and point-based billing**
 
@@ -792,7 +788,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 ---
 
-### FastGPT detailed function analysis
+#### FastGPT detailed function analysis
 
 - **Core Positioning**
 
@@ -855,7 +851,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 ---
 
-### Ragflow detailed function breakdown
+#### Ragflow detailed function breakdown
 
 - **Core Positioning**
 
@@ -909,7 +905,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 ---
 
-### LangChain detailed function analysis
+#### LangChain detailed function analysis
 
 - **Positioning and Features**
 
@@ -964,7 +960,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 ---
 
-### LlamaIndex detailed function breakdown
+#### LlamaIndex detailed function breakdown
 
 - **Positioning and Features**
 
@@ -1014,7 +1010,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 ---
 
-### CrewAI detailed function breakdown
+#### CrewAI detailed function breakdown
 
 - **Positioning and Features**
 
@@ -1041,7 +1037,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 - **Difficulty of use**
 
-- Suitable for senior developers or research teams: experience in distributed systems, asynchronous programming, message queues, etc. is required.
+- Suitable for senior developers or research teams: Experience in distributed systems, asynchronous programming, message queues, etc. is required.
 - Learning cost: It is necessary to understand the multi-agent architecture design and concurrent collaboration mode. The initial construction cost is high, but it can bring clearer division of labor in complex scenarios.
 
 - **Typical scenario**
@@ -1058,7 +1054,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 ---
 
-### AutoGen detailed function breakdown
+#### AutoGen detailed function breakdown
 
 - **Positioning and Features**
 
@@ -1101,7 +1097,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 ---
 
-### Flowise detailed function breakdown
+#### Flowise detailed function breakdown
 
 - **Positioning and Features**
 
@@ -1129,7 +1125,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 - **Difficulty of use**
 
-- Low threshold: Non-technical personnel can also quickly build prototypes; technical personnel can expand functions through custom nodes.
+- Low threshold: Non-technical personnel can also quickly build prototypes; technical personnel can expand functions by customizing nodes.
 - Low learning cost: intuitive interface, less need to write code; suitable for early verification or business teams to independently build lightweight applications.
 
 - **Typical scenario**
@@ -1148,28 +1144,27 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 ---
 
-### 5.4. GPU self-hosted open source model
+### 5.4. Self-hosted and open source model solutions
 
-#### 5.4.1 GPU self-hosting price reference (on demand, converted to RMB ¥)
+#### 5.4.1 GPU self-hosting price reference
 
-| Platform     | GPU Model                | Video Memory | On-Demand ¥/h | Spot ¥/h | Notes                                                   |
-| ------------ | ------------------------ | ------------ | ------------- | -------- | ------------------------------------------------------- |
-| RunPod       | H100 80 GB (PCIe)        | 80G          | 14.43         | —        | Community-based GPU cloud with competitive prices.      |
-|              | A100 80 GB (PCIe)        | 80G          | 8.63          | —        |                                                         |
-| CoreWeave    | H100 80 GB SXM           | 80G          | 34.44         | —        | Designed for AI, billed by the second.                  |
-|              | A100 80 GB               | 80G          | 16.02         | —        |                                                         |
-| Lambda Labs  | H100 80 GB SXM           | 80G          | 21.68         | —        | Price reference for 8x GPU configuration.               |
-|              | A100 80GB SXM            | 80G          | 12.98         | —        |                                                         |
-| Vast.ai      | H100 80 GB               | 80G          | 15.01         | —        | One of the lowest prices on the market.                 |
-|              | A100 80 GB               | 80G          | 7.40          | —        |                                                         |
-| Hyperstack   | A100 80 GB               | 80G          | 6.89          | —        | Competitively priced.                                   |
-| TensorDock   | A100 80 GB (PCIe)        | 80G          | 10.88         | 4.86     | Community GPU cloud with Spot instances.                |
-| Azure        | H100 80 GB (PCIe)        | 80G          | 36.25         | 20.23    | Flagship GPU, Spot instances are at risk of preemption. |
-|              | A100 80 GB (PCIe)        | 80G          | 18.13         | 7.55     |                                                         |
-| Google Cloud | H100 80 GB               | 80G          | 43.50         | —        | Reference for mainstream cloud vendors.                 |
-|              | A100 80 GB               | 80G          | 29.00         | —        |                                                         |
-| AWS          | H100 80 GB (p5.48xlarge) | 80G          | 28.51         | —        | Price reference for 8x H100 instances.                  |
-|              | A100 40 GB (g5.xlarge)   | 24G          | 8.63          | —        | For small to medium models.                             |
+##### GPU cloud platform rental price comparison table (unit: ¥/hour, USD in brackets)
+
+| Platform        | NVIDIA A100 80GB ¥/h (USD) | NVIDIA T4 16GB ¥/h (USD)  | Notes                                                                                                                                                                                                                                                                                                                                                               |
+| --------------- | -------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Thunder Compute | 5.66 (0.78)                | 1.96 (0.27)               | Emerging platform, supported by Y Combinator; highly competitive on-demand pricing, suitable for short-term experiments and elastic expansion; quotas must be applied for in advance and availability zone coverage must be verified; enterprise-level SLA, network bandwidth, and support capabilities require additional evaluation.                              |
+| TensorDock      | 6.89 (0.95)                | —                         | Provides A100 instances and has H100 options (about $2.25/h); supports Spot instances to further reduce costs; suitable for multi-model demand scenarios; needs to pay attention to preemption interruption risks, instance availability, and network/storage performance.                                                                                          |
+| Alibaba Cloud   | —                          | Starting from 2.00 (0.28) | Suitable for lightweight reasoning and testing; A100 80GB requires special quota and is often out of stock                                                                                                                                                                                                                                                          |
+| Tencent Cloud   | —                          | 13.89 (1.92)              | T4 is moderately priced and easy to integrate with the domestic ecosystem;                                                                                                                                                                                                                                                                                          |
+| RunPod          | 8.63 (1.19)                | —                         | Community GPU cloud, A100 80GB, low to medium pricing; provides "secure cloud" option (need to confirm the specific GPU model); suitable for personal development and small team testing; production environment needs to evaluate stability, technical support and data security strategy.                                                                         |
+| Vast.ai         | 5.87 (0.81)                | —                         | Market-based bidding platform, A100 price fluctuates in real time and is usually low; suitable for batch asynchronous tasks or elastic expansion; attention should be paid to instance interruption risks, performance fluctuations caused by node heterogeneity, and the impact of data privacy and network latency on jobs.                                       |
+| Azure           | 26.6 (3.67)                | 3.84 (0.53)               | The ecosystem of large manufacturers is complete, providing rich hosting services, monitoring and MLOps support; the on-demand price is relatively high, and it is recommended to optimize costs through reservations, Savings Plans, Spot/low-priority instances, etc.; suitable for medium- and long-term production-level deployments and high SLA requirements. |
+| Google Cloud    | 45.29 (6.25)               | 2.54 (0.35)               | Ecosystem and global coverage are obvious advantages; T4 has better price-performance ratio and can take advantage of committed use and reserved discounts; A100 is expensive on-demand                                                                                                                                                                             |
+| AWS             | 44.15 (6.09)               | 3.84 (0.53)               | Mature enterprise-level services and ecosystem, high on-demand prices but support for Savings Plan, Reserved, and Spot instances to significantly reduce costs; suitable for production environments with high requirements for SLA, network, and security compliance; requires long-term usage planning and contract discounts.                                    |
+
+-Currently, the prices of high-end graphics cards from Chinese service providers are relatively high (the picture below is from the Internet)
+
+![Graphics card cloud rental price comparison](./pictures/A100.png)
 
 #### 5.4.2 Detailed description
 
@@ -1219,7 +1214,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 ---
 
-## 65. Three-year TCO simulation
+## 6. Three-year TCO simulation
 
 **Assumptions:**
 
@@ -1272,19 +1267,104 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 ---
 
-## 8. Implementation Roadmap (18 months) (Gantt chart + description)
+## 8. Implementation Roadmap (18 months)
 
 ![Generative AI Deployment Strategy Roadmap 2](./pictures/roadmap2.svg)
 
-**illustrate:**
+### PoC Phase (0–2 months)
 
-- **PoC phase (0–2 months)**: Quickly select third-party API + low-code platform, build MVP, conduct preliminary stress and cost testing, and verify core business value.
-- **Beta phase (2–8 months)**: Apply for and use cloud vendor startup credits, migrate to cloud-hosted inference endpoints, integrate vector databases to implement RAG, improve monitoring, alerting, and compliance audit processes, conduct A/B testing to introduce self-hosted or small model options, and evaluate quality and cost differences.
-- **Scale phase (8–18 months)**: Conduct self-hosted GPU Pilot, verify the performance of open source models and establish MLOps processes; develop intelligent scheduling gateways, migrate regular traffic to self-hosted clusters, and use APIs as alternatives for peak or high-precision needs; continue to optimize performance and costs, improve the team and operation system, and realize a mature and sustainable AI platform.
+**Goal**: Quickly verify core business value and obtain initial user feedback and cost-performance data.
+
+**Main tasks**:
+
+- Select a third-party API + low-code platform (such as Dify Cloud/Coze in China) and build an MVP (such as smart FAQ, copywriting generation examples).
+- Conduct stress tests in parallel (using tools such as k6/JMeter), measure average token consumption and latency, and collect key metrics.
+- Apply for and use domestic and foreign entrepreneurial support quotas to cover API call costs; record application progress and quota expiration arrangements.
+
+**Team Responsibilities**:
+
+- Product/Business: Define core scenarios and acceptance criteria.
+- R&D: Integrate API and low-code platform; build monitoring and cost tracking.
+- Operations/DevOps: Configure basic monitoring alerts.
+- Legal/Security: Assess initial compliance requirements; prepare data sovereignty or privacy statement.
+
+**Trigger conditions**:
+
+- Prototype business logic passes preliminary user testing.
+- The monthly call volume or cost measurement reaches the predetermined threshold.
+- Get the next round of funding or the team confirms moving to Beta.
 
 ---
 
-## 9. Conclusion and next steps (key points + explanation)
+Beta Phase (2–8 months)
+
+**Goal**: Deploy a stable version of the service in a compliant region with moderate concurrency, continue to iterate on features and monitor cost/performance.
+
+**Main tasks**:
+
+- Migrate to cloud-hosted inference endpoints (selected regions in China); integrate vector databases and build RAG processes; improve Agent workflows.
+- Establish a monitoring and alarm system: call cost, response time, error rate, resource utilization, etc.; implement budget alarm.
+- Small-scale self-hosted or open source model pilot: Select lightweight models or cloud-rented GPU environments for comparative testing to evaluate performance and cost inflection points.
+- Strengthen compliance processes: input/output review mechanism, log audit, preparation of algorithm filing materials; regular communication and updates with legal affairs.
+
+**Team Responsibilities**:
+
+- Product/Business: Design test cases and A/B experiments.
+- R&D: Implement cloud hosting integration, vector search, agent logic; develop self-hosted test environment.
+- MLOps: monitoring alarms, and automatic scaling scripts.
+- Security/Legal Affairs: Implement audit and compliance processes.
+- Finance: Track the use of support quotas and subsequent budget arrangements.
+
+**Trigger conditions**:
+
+- The monthly call volume or cost reaches the preset threshold.
+- Self-hosting testing shows cost advantages at future scale.
+- Compliance or performance requirements exceed what is acceptable for cloud hosting.
+- The team is ready to commit MLOps manpower and obtain budget approval.
+
+---
+
+Scale Phase (8–18 months)
+
+**Goal**: Launch on a large scale, ensure cost control, stable availability, compliance and security, and build continuous iteration capabilities.
+
+**Main tasks**:
+
+- Launch self-hosted GPU Pilot and deploy some inference services in cloud rental or self-built environments; optimize the inference framework (quantization, mixed precision, batch processing).
+- Build an intelligent traffic dispatching gateway: route traffic to self-hosted or third-party APIs based on request type, cost budget, and real-time load.
+- Improve the MLOps process: automatic expansion and contraction, rolling release, rollback strategy, monitoring alarm, and fault recovery.
+- Deep optimization: model distillation/pruning, small model collaboration, caching strategy, long-term reservation discount negotiation.
+- Team expansion: Establish an AI platform team and clarify the division of roles (MLOps, data engineering, model development, security compliance, and operation and maintenance support).
+- Continuous compliance operations: real-time auditing, manual sampling mechanism, emergency offline process, regular compliance reporting; pay attention to changes in regulatory policies and make timely adjustments.
+
+**Team Responsibilities**:
+
+- R&D/MLOps: Build and maintain self-hosted clusters and scheduling gateways to optimize inference performance and costs.
+- Operations/Infrastructure: Supports large-scale cluster management, network and storage architecture.
+- Security/Legal: Continuous compliance auditing and emergency response.
+- Data Engineering/Model Team: Model optimization and monitoring; data pipeline and feature management.
+- Product/Business: measure business indicators and guide optimization directions.
+- Finance: cost analysis and budget control; negotiation of long-term discounts.
+
+**Trigger conditions**:
+
+- Evaluate progress against milestones and adjust strategy if cost or performance deviates from targets.
+- The results of the self-hosted Pilot are in line with expectations; the scheduling gateway operates stably and achieves the initial traffic distribution goals.
+- Team and budget expansion is ready.
+
+**Milestone Example**:
+
+| Milestone                                                       | Description                                                                                                                                      | Timeline    |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| Pilot environment launched                                      | Self-hosted GPU Pilot environment deployed and tested against cloud hosting/API                                                                  | Month 9–10  |
+| Scheduling Gateway MVP completed                                | The first version of the intelligent traffic scheduling gateway is launched, and some traffic is routed through self-hosting or third-party APIs | Month 11    |
+| MLOps automation capabilities cover major scenarios             | Automatic scaling, rolling release, monitoring and alarm, fault recovery and other processes run in major scenarios                              | Month 12–13 |
+| The proportion of self-hosted traffic reaches the target        | The proportion of self-hosted traffic gradually increases (e.g. 50% → 70%)                                                                       | Month 14–15 |
+| Cost optimization goal achieved                                 | Long-term TCO reduced by expected percentage compared to pure API solution (e.g., 50–60% reduction)                                              | Month 16    |
+| Team and governance system established                          | AI platform team established, with clear division of responsibilities and governance process                                                     | Month 16–17 |
+| Continuous iteration and normalization of compliance operations | Real-time audit and manual sampling mechanism take effect, compliance reports are issued regularly, and monitoring is continuously optimized     | Month 17–18 |
+
+## 9. Key conclusions and action plans
 
 **ACT NOW**
 
