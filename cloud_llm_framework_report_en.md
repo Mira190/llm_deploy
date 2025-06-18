@@ -1,4 +1,4 @@
-## LLM Deployment Solution Research Report v2.0
+## LLM Deployment Solution Research Report v3.0
 
 ## Table of contents
 
@@ -47,34 +47,44 @@ Core conclusion: Through the gradual evolution from PoC → Beta → Scale, we c
 
 ## 2. Decision Dimensions and Scoring Model
 
-In order to achieve a scientific and transparent selection process, a quantitative evaluation model was established, which includes the following six key dimensions. Each dimension is assigned a weight that reflects the typical priorities of start-ups.
+In order to achieve a scientific and transparent selection process, a quantitative evaluation model was established, which includes the following eight key dimensions. Each dimension is assigned a weight that reflects the typical priorities of startups.
 
-![Decision Dimension](./pictures/decision.png)
+![Deployment mode](./pictures/matrix.png)
+
+| Dimensions                           | Weighting Examples | Explanations and Considerations                                                                                                                                                                                                                                                                                               |
+| ------------------------------------ | :----------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Speed ​​of launch                    |        30%         | Core question: How quickly can we get our product to users? Evaluate the integration difficulty and end-to-end delivery cycle of the solution. For startups, launching MVP quickly is the key to seize the market opportunity.                                                                                                |
+| Model performance                    |        20%         | Core question: What is the quantitative ability of the model in key tasks (such as coding, RAG, Agent, multi-round dialogue, mathematical reasoning, etc.)? If the project emphasizes intelligent ability, this weight is high; if the PoC first verifies the function, it can be appropriately lowered.                      |
+| Long-term costs                      |        10%         | Core question: Will our profits be eaten up by costs after scaling? Focus on 3-year TCO, including API call fees or self-developed/self-hosted hardware depreciation, operation and maintenance manpower, upgrade and migration costs, etc., to measure long-term sustainability.                                             |
+| Operation and maintenance complexity |        10%         | Core question: How many people and what skills are needed to maintain the system? Evaluate the workload of daily maintenance, monitoring, troubleshooting and upgrades; low operation and maintenance solutions allow streamlined teams to focus more on business innovation.                                                 |
+| Elastic expansion                    |        10%         | Core question: Can the system support a sudden increase in the number of users? Can the cost be reduced during off-peak hours? The flexibility of the automatic expansion capability and automatic reduction cost saving of the solution directly affects the cost efficiency and user experience.                            |
+| Ecosystem completeness               |        10%         | Core question: How easy is it to build advanced features such as RAG and Agent? Investigate the maturity of surrounding tool chains, SDKs, development libraries, and community support. A complete ecosystem can greatly reduce the difficulty of building complex AI applications and accelerate development and iteration. |
+| Compliance and Security              |         5%         | Core questions: Does the solution meet local regulations? Is user data secure? Evaluating data residency, content review, privacy protection, encryption and audit capabilities, vendor qualifications and SLA commitments is critical for projects in specific industries or regions.                                        |
+| User experience/API usability        |         5%         | Core issues: richness of API documentation and examples, friendliness of error prompts, multi-language SDK, debugging tools, local simulation, etc.; easy-to-use APIs can significantly accelerate development iterations and improve team efficiency.                                                                        |
+
+> **Usage suggestions:**
+
+- **Quantitative details** – Set clear indicators for “speed of launch”:
+  T₀ → Demo ≤ 14 days: 5 points; ≤ 28 days: 4 points; and so on.
+
+- **Multi-party scoring** – Joint evaluation by product/development/operation/legal/finance to avoid bias from a single perspective.
+
+- **Iterative Update** – After the PoC is completed, the scores of each dimension will be backfilled with real data, and the weights will be recalibrated according to business priorities in preparation for the Beta phase.
 
 ### Deployment plan scoring table (PoC stage weight setting)
 
-| Solution               | Speed ​​of launch (1–5) | Long-term cost (1–5) | Operational complexity (1–5) | Elastic expansion (1–5) | Ecosystem integrity (1–5) | Compliance and security (1–5) | Weighted total score |
-| ---------------------- | ----------------------- | -------------------- | ---------------------------- | ----------------------- | ------------------------- | ----------------------------- | -------------------- |
-| API calls + low-code   | 5                       | 4                    | 5                            | 4                       | 4                         | 3                             | 4.3                  |
-| Cloud-hosted inference | 4                       | 3                    | 4                            | 4                       | 5                         | 4                             | 3.9                  |
+| Solution                             | Speed ​​ | Performance | Cost | Maintenance | Expansion | Ecosystem | Compliance | Ease of use | **Weighted total score** |
+| ------------------------------------ | :------: | :---------: | :--: | :---------: | :-------: | :-------: | :--------: | :---------: | :----------------------: |
+| **API Calls + Low Code**             |    5     |      4      |  4   |      5      |     3     |     4     |     3      |      5      |         **4.30**         |
+| **Cloud-Hosted Inference**           |    4     |      4      |  3   |      4      |     4     |     5     |     4      |      4      |         **4.00**         |
+| **Hybrid deployment (API + local)**  |    3     |      4      |  3   |      3      |     5     |     4     |     4      |      3      |         **3.55**         |
+| **Self-developed / self-hosted GPU** |    2     |      5      |  2   |      2      |     3     |     3     |     5      |      2      |         **2.95**         |
 
 > **Description:**
 >
-> - The weighted total score is calculated as follows: launch speed × 25% + long-term cost × 20% + operation and maintenance complexity × 15% + elastic expansion × 15% + ecological integrity × 15% + compliance and security × 10%.
-> - The example scores are for reference only. The actual scores should be adjusted based on the company's needs, the amount of support received, the team's capabilities, business risk preferences, etc.
+> - The weighted total score is calculated as follows: launch speed × 30% + model performance × 20% + long-term cost × 10% + operation and maintenance complexity × 10% + elastic expansion × 10% + ecological integrity × 10% + compliance and security × 5% + user experience/API usability × 5%.
 
 ---
-
-### Dimension weight table
-
-| Dimensions                           | Weights | Description and Considerations                                                                                                                                                                                                                                                                                          |
-| ------------------------------------ | :-----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Speed ​​to market                    |   25%   | Core question: How quickly can we get our product to users? Evaluate the integration difficulty and end-to-end delivery cycle of the solution. For startups, quickly launching an MVP is the key to gaining a head start in the market.                                                                                 |
-| Long-term costs                      |   20%   | Core question: Will our profits be eaten up by costs after scaling? Focus on 3-year TCO, including API call fees, hardware depreciation, operation and maintenance manpower, upgrade and migration costs, etc., to measure long-term sustainability and profit margin impact.                                           |
-| Operation and maintenance complexity |   15%   | Core question: How many people and what skills are needed to maintain the system? Evaluate the workload of daily maintenance, monitoring, troubleshooting and upgrades. Low operation and maintenance solutions allow streamlined teams to focus more on business innovation.                                           |
-| Elastic expansion                    |   15%   | Core question: Can the system support a sudden increase in the number of users? Can the cost be reduced during off-peak hours? The flexibility of the automatic expansion capability and automatic reduction cost saving of the solution directly affects the cost efficiency and user experience.                      |
-| Ecosystem completeness               |   15%   | Core question: How easy is it to build advanced features such as RAG and Agent? Investigate the maturity of surrounding tool chains, development libraries, and community support. A complete ecosystem can greatly reduce the difficulty of building complex AI applications and accelerate development and iteration. |
-| Compliance and Security              |   10%   | Core Questions: Does the solution meet local regulations? Is user data secure? Evaluating data residency, content review, privacy protection, encryption and audit capabilities is critical for projects targeting specific industries or regions.                                                                      |
 
 ## 3. Overview of deployment modes
 
@@ -116,7 +126,7 @@ In order to achieve a scientific and transparent selection process, a quantitati
 - **Special Funding**: Up to $300,000 (approximately ¥2.175 million) specifically for testing AI acceleration hardware such as AWS Trainium/Inferentia.
 - **Grading application conditions**:
 - **Activate Founders**: Base $1,000 (about ¥72,500), suitable for self-funded or early-stage teams.
-- **Standard startup**: Up to $100,000 (approximately ¥725,000), VC/incubator recommendation or partner institution endorsement required.
+- **Standard Startup**: Up to $100,000 (approximately ¥725,000), VC/Incubator recommendation or partner institution endorsement required.
 - **Generative AI Specialty**: Up to $300,000 (approximately ¥2.175 million), focusing on generative AI-related business or technology verification scenarios.
 - **Basic Requirements**:
 - New to AWS Activate, typically 10 years old or younger.
@@ -131,7 +141,7 @@ In order to achieve a scientific and transparent selection process, a quantitati
 - **High Level**: Up to $150,000 (approximately ¥1.0875 million), automatically renewed by using an activity scoring system.
 - **Features**:
 - No VC recommendation required, self-service online application, fast review.
-- Engagement score: About 45 days before the credit expires, we will automatically evaluate whether to renew or increase your credit based on your Azure service usage activity.
+- Participation score: About 45 days before the quota expires, an assessment will be automatically made to determine whether to renew or increase the quota based on your Azure service usage activity.
 - Credits can be used for various Azure services, including Azure OpenAI, storage, computing, databases, etc.
 - **Application website:** https://www.microsoft.com/en-us/startups
 
@@ -157,7 +167,7 @@ In order to achieve a scientific and transparent selection process, a quantitati
 
 #### Alibaba Cloud MARS Entrepreneur Program – Major Upgrade in 2025
 
-- **Release background**: In April 2025, the "MARS Entrepreneur Program" was newly upgraded, aiming to support at least 1,000 start-ups within one year and provide millions of AI resource subsidies.
+- **Release background**: In April 2025, the "MARS Entrepreneur Program" was newly upgraded, aiming to support at least 1,000 startups within one year and provide millions of AI resource subsidies.
 - **Core Support Content**:
 - **AI resource subsidies**: Massive call subsidies (trillions of tokens) and thousands of hours of technical support.
 - **Basic credit limit**: starting from ¥3,500, up to ¥1 million cloud discount coupons.
@@ -240,298 +250,409 @@ In order to achieve a scientific and transparent selection process, a quantitati
 
 ### 5.1 International/Domestic Third-Party API
 
-#### 5.1.1 Pricing Overview
+### 5.1.1 Pricing Overview
 
-| Platform / Model                      | Context Window (Tokens) | Input ¥ / 1k Tokens                         | Output ¥ / 1k Tokens                    | Features and Model Value                                                                                                                                  |
-| ------------------------------------- | ----------------------- | ------------------------------------------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **OpenAI**                            |                         |                                             |                                         |                                                                                                                                                           |
-| GPT-4.1 nano                          | 128K                    | 0.00073                                     | 0.00290                                 | The fastest and lowest cost model, suitable for low-latency tasks such as fast-response agents or edge computing.                                         |
-| GPT-4.1 mini                          | 128K                    | 0.00290                                     | 0.01160                                 | A balance between intelligence and speed, suitable for most medium-complexity business applications.                                                      |
-| GPT-4.1                               | 128K                    | 0.01450                                     | 0.05800                                 | Most intelligent, suitable for complex tasks such as document understanding, legal analysis, research reasoning, etc.                                     |
-| o3                                    | 128K                    | 0.01450                                     | 0.05800                                 | A new generation flagship reasoning model that excels at code, math, science, and multimodal reasoning tasks.                                             |
-| o4-mini                               | 128K                    | 0.00798                                     | 0.03190                                 | The best performance-price ratio for inference, suitable for cost-sensitive mathematical and visual scenarios that require strong inference capabilities. |
-| **Anthropic Claude**                  |                         |                                             |                                         |                                                                                                                                                           |
-| Claude Haiku 3.5                      | 200K                    | 0.00580                                     | 0.02900                                 | Extreme cost-effectiveness and responsiveness, suitable for lightweight dialogue and real-time content generation scenarios.                              |
-| Claude Sonnet 4                       | 200K                    | 0.02180                                     | 0.10875                                 | Optimal balance between intelligence and cost, suitable for enterprise-level search, RAG applications, daily AI assistants, etc.                          |
-| Claude Opus 4                         | 200K                    | 0.10875                                     | 0.54375                                 | The most powerful intelligent model, suitable for the most complex reasoning, cross-modal applications and high-value task scenarios.                     |
-| **Google (Gemini)**                   |                         |                                             |                                         |                                                                                                                                                           |
-| Gemini 2.5 Flash Preview              | 1M                      | 0.00109                                     | 0.00435(Non-thinking) 0.02538(thinking) | Low-cost and long-context, optimal for multimodal scenarios; commonly used for high-concurrency and large-scale deployment.                               |
-|                                       |
-| Gemini 2.5 Pro                        | 1M                      | 0.00906 (≤200K)                             | 0.07250 (≤200K)                         | Deep document understanding and long document summarization, complex multimodal high-value scenarios.                                                     |
-|                                       |                         | 0.01813 (>200K)                             | 0.10875 (>200K)                         |                                                                                                                                                           |
-| **DeepSeek**                          |                         |                                             |                                         |                                                                                                                                                           |
-| DeepSeek-V3                           | 64K                     | 0.00200 (miss)                              | 0.00800                                 | General MoE, cost-effective, excellent Chinese comprehension and reasoning; cache hit can be reduced to 0.00051.                                          |
-| DeepSeek-R1                           | 64K                     | 0.00400 (missed)                            | 0.01600                                 | Optimized version for complex reasoning, suitable for technical problem solving and deep thinking.                                                        |
-| **Alibaba Cloud (Qwen)**              |                         |                                             |                                         |                                                                                                                                                           |
-| Tongyi Qianwen-Max                    | 131,072                 | 0.0024                                      | 0.0096                                  | Flagship model, suitable for complex tasks, with the strongest capabilities                                                                               |
-| Tongyi Qianwen-Plus                   | 131,072                 | 0.0008                                      | 0.0020                                  | Balanced effect, speed and cost, suitable for most general tasks                                                                                          |
-| Tongyi Qianwen-Turbo                  | 1,000,000               | 0.0003                                      | 0.0006                                  | Extremely cost-effective, fast, low cost, suitable for simple tasks                                                                                       |
-| Tongyi Qianwen-Long                   | 10,000,000              | 0.0005                                      | 0.0020                                  | Supports very long texts, suitable for large-scale analysis and long document processing scenarios                                                        |
-| **Baidu Qianfan**                     |                         |                                             |                                         |                                                                                                                                                           |
-| ERNIE Speed/Lite                      | 8K/128K                 | 0.00000 (Free)                              | 0.00000 (Free)                          | Lightweight and zero-cost, suitable for large-scale free trials and PoC.                                                                                  |
-| ERNIE 4.5 Turbo                       | TBC                     | 0.00080                                     | 0.00320                                 | Cost-effective general model, supports tool calls, commonly used in enterprises.                                                                          |
-| ERNIE 4.5                             | TBC                     | 0.00400                                     | 0.01600                                 | Deep multimodal flagship, leading in Chinese understanding and reasoning, and optimized for core business scenarios.                                      |
-| **Tencent Cloud (Hunyuan)**           |                         |                                             |                                         |                                                                                                                                                           |
-| Hunyuan-lite                          | 250K                    | 0.00000 (free)                              | 0.00000 (free)                          | Free long context, suitable for large-scale basic services and PoC.                                                                                       |
-| Hunyuan-TurboS                        | 28K                     | 0.00080 (500,000-1,000,000 tokens are free) | 0.00200                                 | Trillion-parameter flagship, long-context high-performance scenarios.                                                                                     |
-| Hunyuan-T1                            | 28K                     | 0.00100                                     | 0.00400                                 | General main model, comprehensive capabilities, suitable for core applications such as complex question answering and document understanding              |
-| **Mistral AI**                        |                         |                                             |                                         |                                                                                                                                                           |
-| Mistral Small 3.1                     | 128K                    | 0.00073                                     | 0.00218                                 | Lightweight and efficient, multi-language scenarios.                                                                                                      |
-| Mistral Medium 3                      | 128K                    | 0.00290                                     | 0.01450                                 | Cost-effective for medium to high-complexity tasks, commonly used in coding/STEM.                                                                         |
-| Mistral Large                         | 128K                    | 0.01450                                     | 0.04350                                 | Flagship level, suitable for the most demanding scenarios.                                                                                                |
-| **Cohere**                            |                         |                                             |                                         |                                                                                                                                                           |
-| Command R7B                           | 128K                    | 0.00027                                     | 0.00109                                 | Small model lightweight testing and lightweight RAG, lowest cost.                                                                                         |
-| Command R                             | 128K                    | 0.00109                                     | 0.00435                                 | General RAG model, enterprise lightweight application.                                                                                                    |
-| Command A                             | 256K                    | 0.01813                                     | 0.07250                                 | Agentic AI optimized version, suitable for multi-language RAG and complex business.                                                                       |
-| **Volcano Ark (Volcengine)**          |                         |                                             |                                         |                                                                                                                                                           |
-| Doubao-pro-32k                        | 32K                     | 0.00080                                     | 0.00200                                 | Main general-purpose large model, with high performance and accuracy.                                                                                     |
-| **OpenRouter (Convergence Platform)** |                         |                                             |                                         |                                                                                                                                                           |
-| Llama 3.3 70B                         | 131K                    | 0.00051                                     | 0.00181                                 | Lowest unit price, OpenAI compatible API, multi-vendor multi-model selection.                                                                             |
+| Platform / Model                      | Context Window | **Input ¥ / 1M tokens** | **Output ¥ / 1M tokens**                       | Features and Model Value                                                                                                          |
+| ------------------------------------- | -------------- | ----------------------- | ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| **OpenAI**                            |                |                         |                                                |                                                                                                                                   |
+| GPT-4.1 nano                          | 128 K          | **0.73**                | **2.90**                                       | Fastest, lowest cost model, suitable for low-latency tasks such as fast-response agents or edge computing.                        |
+| GPT-4.1 mini                          | 128 K          | **2.90**                | **11.60**                                      | A balance of intelligence and speed, suitable for most medium-complexity businesses.                                              |
+| GPT-4.1                               | 128 K          | **14.50**               | **58.00**                                      | Most intelligent, suitable for complex tasks such as document understanding, legal analysis, and research reasoning.              |
+| o3                                    | 128 K          | **14.50**               | **58.00**                                      | A new generation flagship reasoning model that excels in code, math, science, and multimodal reasoning.                           |
+| o4-mini                               | 128 K          | **7.98**                | **31.90**                                      | The best performance-price ratio for inference, suitable for cost-sensitive scenarios that require strong inference capabilities. |
+| **Anthropic Claude**                  |                |                         |                                                |                                                                                                                                   |
+| Claude Haiku 3.5                      | 200K           | **5.80**                | **29.00**                                      | Extremely cost-effective and responsive, suitable for lightweight dialogue and real-time generation.                              |
+| Claude Sonnet 4                       | 200K           | **21.80**               | **108.75**                                     | Optimal balance between intelligence and cost, suitable for enterprise search, RAG, and daily AI assistant.                       |
+| Claude Opus 4                         | 200 K          | **108.75**              | **543.75**                                     | The most powerful intelligence, suitable for the highest complexity reasoning and cross-modal high-value tasks.                   |
+| **Google Gemini**                     |                |                         |                                                |                                                                                                                                   |
+| Gemini 2.5 Flash Preview              | 1 M            | **1.09**                | **4.35** (Non-thinking) / **25.38** (Thinking) | Low-cost, long-context, multi-modal deployment optimization.                                                                      |
+| Gemini 2.5 Pro ≤200 K                 | 1 M            | **9.06**                | **72.50**                                      | Deep document understanding and multimodal high-value scenarios.                                                                  |
+| Gemini 2.5 Pro >200 K                 | 1 M            | **18.13**               | **108.75**                                     | —                                                                                                                                 |
+| **DeepSeek**                          |                |                         |                                                |                                                                                                                                   |
+| DeepSeek-V3 (misses)                  | 64K            | **2.00**                | **8.00**                                       | General MoE cost-effective; cache hits as low as 0.51/1.00 (M).                                                                   |
+| DeepSeek-R1                           | 64 K           | **4.00**                | **16.00**                                      | Optimized version for complex reasoning, suitable for technical problem solving and deep thinking.                                |
+| **Alibaba Cloud Qwen**                |                |                         |                                                |                                                                                                                                   |
+| Tongyi Qianwen-Max                    | 131 K          | **2.40**                | **9.60**                                       | Flagship model, with the strongest ability for complex tasks.                                                                     |
+| Tongyi Qianwen-Plus                   | 131 K          | **0.80**                | **2.00**                                       | Balance of effect, speed and cost.                                                                                                |
+| Tongyi Qianwen-Turbo                  | 1 M            | **0.30**                | **0.60**                                       | Extremely cost-effective, fast speed and low cost.                                                                                |
+| Tongyi Qianwen-Long                   | 10 M           | **0.50**                | **2.00**                                       | Supports very long texts and is optimized for large-scale analysis.                                                               |
+| **Baidu Qianfan**                     |                |                         |                                                |                                                                                                                                   |
+| ERNIE Speed/Lite                      | 8K / 128 K     | **0.00**                | **0.00**                                       | Lightweight and zero-cost, PoC and large-scale trial friendly.                                                                    |
+| ERNIE 4.5 Turbo                       | —              | **0.80**                | **3.20**                                       | Cost-effective general model, supporting tool calls.                                                                              |
+| ERNIE 4.5                             | —              | **4.00**                | **16.00**                                      | Deep multimodal flagship, leading in Chinese reasoning.                                                                           |
+| **Tencent Cloud Hunyuan**             |                |                         |                                                |                                                                                                                                   |
+| Hunyuan-lite                          | 250 K          | **0.00**                | **0.00**                                       | Free long context, suitable for basic services and PoC.                                                                           |
+| Hunyuan-TurboS                        | 28K            | **0.80**                | **2.00**                                       | 500,000–1,000,000 tokens free quota, flagship performance.                                                                        |
+| Hunyuan-T1                            | 28 K           | **1.00**                | **4.00**                                       | General main model, commonly used for complex question answering and document understanding.                                      |
+| **Mistral AI**                        |                |                         |                                                |                                                                                                                                   |
+| Mistral Small 3.1                     | 128 K          | **0.73**                | **2.18**                                       | Lightweight and efficient, multi-language friendly.                                                                               |
+| Mistral Medium 3                      | 128 K          | **2.90**                | **14.50**                                      | Good value for medium to high complexity tasks.                                                                                   |
+| Mistral Large                         | 128 K          | **14.50**               | **43.50**                                      | Flagship-level capabilities, the first choice for hardcore scenarios.                                                             |
+| **Cohere**                            |                |                         |                                                |                                                                                                                                   |
+| Command R7B                           | 128 K          | **0.27**                | **1.09**                                       | Small model RAG / Test preferred, lowest cost.                                                                                    |
+| Command R                             | 128 K          | **1.09**                | **4.35**                                       | General RAG model, enterprise lightweight application.                                                                            |
+| Command A                             | 256 K          | **18.13**               | **72.50**                                      | Agentic AI optimization, multi-language RAG and complex business.                                                                 |
+| **Volcano Ark (Volcengine)**          |                |                         |                                                |                                                                                                                                   |
+| Doubao-pro-32k                        | 32 K           | **0.80**                | **2.00**                                       | Main general-purpose large model with stable performance.                                                                         |
+| **OpenRouter (Convergence Platform)** |                |                         |                                                |                                                                                                                                   |
+| Llama 3.3 70B                         | 131 K          | **0.51**                | **1.81**                                       | Lowest price, OpenAI compatible API, multiple models available.                                                                   |
 
-#### 5.1.2 Detailed description
+> **Description**:
+>
+> - Free model shows **0.00**.
+
+#### 5.1.2 Model Detailed Description
 
 ---
 
+#### Overview of key benchmarks
+
+In order to comprehensively evaluate large language models, the industry has established a number of standardized benchmarks to measure the performance of models in different cognitive dimensions and application scenarios. These key benchmarks are crucial for selecting appropriate models. Let’s take a look at the current mainstream benchmarks.
+
+1. Overall Score / Arena Elo
+
+- Obtained through the Elo rating or user preference voting results of platforms such as Chatbot Arena, reflecting the comprehensive user experience of the model in general conversation and task processing. The Elo mechanism calculates the relative ranking by randomly pairing models, collecting human preference votes. A high Elo means that the model is more popular with users in a wide range of scenarios.
+
+2. Mathematical Reasoning (AIME 2024/2025)
+
+- AIME Benchmark evaluates the model's ability to solve medium- and high-difficulty math reasoning problems. It not only measures the correctness of calculations, but also examines multi-step logical deductions. The 2025 version was run multiple times to reduce variance, and the results showed that o3 Mini and Gemini 2.5 Pro Exp led the way in AIME 2024/2025.
+
+3. **Coding ability (SWE-bench, BigCodeBench, LiveCodeBench, etc.)**
+
+- SWE-bench: pass\@k/resolved rate metric for real software engineering tasks (e.g., GitHub issue fixes). Top models in 2025 include Claude Sonnet 4, o3, GPT-4.1 series, Gemini 2.5 Flash, etc.
+- BigCodeBench: A complex code generation/repair benchmark for larger models, covering multi-model comparisons.
+- LiveCodeBench: Another platform for real-time evaluation of coding capabilities.
+
+4. Scientific knowledge (GPQA Diamond)
+
+- GPQA Benchmark tests the accuracy of models in cross-disciplinary, high-level professional question answering. The latest data shows that Gemini 2.5 Pro Exp leads with about 80.3%, Groκ 3 Mini Fast High Reasoning \~79.0%, Claude 3.7 Sonnet Thinking Mode \~75.3%, o3 Mini \~75.0%, etc.
+
+5. Multimodal Understanding (MMMU)
+
+- MMMU Benchmark evaluates the model's ability to process multimodal information such as graphics, text, and charts. The latest results show that Gemini 2.5 Pro Exp leads by about ≈81.7% on this benchmark, second only to or close to leading models such as o3 and Claude.
+
+6. Agent capabilities (such as BFCL/ArenaHard/MultiChallenge/Multi-turn)
+
+- Measures the performance of the model in scenarios such as multi-step tasks, tool calls, and environment interactions. Typical benchmarks include BFCL, ArenaHard, MultiChallenge, etc. ChatGPT-4o performs ~72.1% on BFCL, Qwen3 (235B) BFCL ~70.8%, Hunyuan Turbos ArenaHard ~91.9%, etc.
+
+---
+
+#### Detailed analysis of model performance
+
+The following table summarizes the latest performance of the main LLM APIs on the above key benchmarks. Due to the large differences in the formats published by different platforms, we have appropriately standardized the indicators:
+
+- **Combined Score**: Reference to Chatbot Arena Elo ranking or approximation.
+- **AIME**: pass\@1 or accuracy percentage if the platform only publishes leading models.
+- **SWE-bench**：Resolved Rate (%) 或 pass\@5 (%)。
+- **GPQA**: Accuracy (%).
+- **MMMU**: Accuracy (%).
+- **Agent capabilities**: MultiChallenge/BFCL/ArenaHard etc. accuracy (%).
+
+**Latest performance of major LLM APIs on key benchmarks**
+
+| Ranking | Model Name               | Company       | Arena Elo | AIME 2024 | SWE-bench | GPQA  | MMMU  | MultiChallenge |
+| :-----: | ------------------------ | ------------- | :-------: | :-------: | :-------: | :---: | :---: | :------------: |
+|    1    | Gemini 2.5 Pro           | Google        |   1480    |   92.0%   |   63.8%   | 84.0% | 81.7% |     51.91      |
+|    2    | O3                       | OpenAI        |   1427    |   91.6%   |   69.1%   | 83.3% | 82.9% |     56.51      |
+|    3    | ChatGPT-4o               | OpenAI        |   1426    |   13.1%   |   29.8%   | 53.6% | 69.1% |     27.81      |
+|    4    | GPT-4.5                  | OpenAI        |   1413    |   36.7%   |   38.0%   | 71.4% | 74.4% |     43.77      |
+|    5    | Claude Opus 4            | Anthropic     |   1373    |   75.5%   |   72.5%   | 79.6% | 76.5% |     53.90      |
+|    6    | Gemini 2.5 Flash         | Google        |   1420    |    72%    |   60.4%   | 82.8% | 79.7% |     47.65      |
+|    7    | DeepSeek R1-0528         | DeepSeek AI   |   1421    |   91.4%   |   57.6%   | 81.0% |  N/A  |     44.55      |
+|    8    | GPT-4.1                  | OpenAI        |   1385    |   9.8%    |   54.6%   | 50.3% | 80.1% |     38.26      |
+|    9    | Grok 3 Preview           | xAI           |   1419    |   52.2%   |   57.0%   | 75.4% | 73.2% |      N/A       |
+|   10    | Qwen3-235B-A22B          | Alibaba Cloud |   1363    |   85.7%   |   70.7%   | 71.1% |  N/A  |     40.53      |
+|   11    | DeepSeek V3              | DeepSeek AI   |   1334    |   39.2%   |   42.0%   | 59.1% |  N/A  |     32.19      |
+|   12    | O4 Mini                  | OpenAI        |   1362    |   92.7%   |   68.9%   | 81.4% | 81.6% |     43.83      |
+|   13    | O1                       | OpenAI        |   1365    |   79.2%   |   48.9%   | 78.0% | 77.6% |     44.93      |
+|   14    | Claude Sonnet 4          | Anthropic     |   1346    |   70.5%   |   72.7%   | 75.4% | 74.4% |     49.63      |
+|   15    | Gemini 2.5 Flash Lite    | Google        |   1377    |   71.4%   |   45.2%   | 76.8% | 78.3% |      N/A       |
+|   16    | Claude 3.7 Sonnet        | Anthropic     |   1307    |   80.0%   |   70.3%   | 84.8% | 75.0% |     42.89      |
+|   17    | Mistral Medium           | Mistral AI    |   1365    |   42.8%   |   38.4%   | 68.9% | 73.2% |     32.29      |
+|   18    | Hunyuan Turbos           | Tencent       |   1373    |   76.4%   |   64.9%   | 69.3% | 74.6% |      N/A       |
+|   19    | GPT-4.1 Mini             | OpenAI        |   1338    |   28.5%   |   31.8%   | 65.0% | 72.7% |     35.81      |
+|   20    | Qwen2.5 Max              | Alibaba Cloud |   1360    |    N/A    |   38.7%   | 60.1% |  N/A  |      N/A       |
+|   21    | O3 Mini High             | OpenAI        |   1340    |   87.3%   |   35.5%   | 79.7% |  N/A  |     39.89      |
+|   22    | Claude 3.5 Sonnet        | Anthropic     |   1299    |   16.0%   |   49.0%   | 65.0% | 68.3% |     43.20      |
+|   23    | Gemini 2.0 Flash         | Google        |   1363    |   73.3%   |   28.7%   | 74.2% | 75.4% |     36.88      |
+|   24    | Gemma 3 27B IT           | Google        |   1356    |   42.8%   |   29.7%   | 42.4% | 64.9% |      N/A       |
+|   25    | Grok 3 Mini Beta         | xAI           |   1361    |   39.7%   |   41.5%   | 66.2% | 69.4% |      N/A       |
+|   26    | O3 Mini                  | OpenAI        |   1321    |   87.3%   |   35.5%   | 77.0% |  N/A  |     40.09      |
+|   27    | Gemini 1.5 Pro           | Google        |   1317    |   36.4%   |   26.6%   | 46.2% | 62.2% |     21.59      |
+|   28    | Command A                | Cohere        |   1325    |   28.5%   |   31.4%   | 50.8% | 58.7% |      N/A       |
+|   29    | Qwen Plus                | Alibaba Cloud |   1326    |   68.9%   |   45.3%   | 62.4% | 67.8% |      N/A       |
+|   30    | Gemma 3 12B IT           | Google        |   1336    |   38.7%   |   24.6%   | 40.9% | 59.6% |      N/A       |
+|   31    | Hunyuan Turbo            | Tencent       |   1311    |   58.4%   |   42.8%   | 55.6% | 61.9% |      N/A       |
+|   32    | GLM-4 Plus               | Zhipu AI      |   1326    |   52.7%   |   38.9%   | 58.2% | 63.4% |      N/A       |
+|   33    | Llama 3.1 Nemotron Ultra | Meta          |   1312    |   45.6%   |   24.6%   | 48.3% | 56.8% |      N/A       |
+|   34    | O1 Mini                  | OpenAI        |   1319    |   79.2%   |   27.2%   | 59.4% | 78.2% |     34.49      |
+|   35    | Llama 3.1 405B Instruct  | Meta          |   1284    |   41.3%   |   26.4%   | 51.1% | 64.5% |     16.22      |
+
+---
+
+#### Performance evolution and competitive focus
+
+- **Overall ranking is tight**: Models from major manufacturers compete fiercely in the overall ranking, with the Elo score gap between them often within dozens of points, and new versions are released frequently in an effort to surpass their competitors.
+- **Breakthroughs in specific areas**:
+- **Mathematics and Reasoning**: Grok 3 Mini Beta achieved a high score of about 95.8% in AIME Mathematical Reasoning (experimental mode); DeepSeek R1 showed strong competitiveness in ArenaHard and Mathematical Reasoning; Qwen3 also performed well in LiveCodeBench and AIME tests.
+- **Multimodal Understanding**: The Gemini series maintains its leading position in the MMMU benchmark, highlighting its advantages in image and text, chart understanding, and cross-modal reasoning.
+- **Multimodal differentiation**: Multimodal capability is an important direction of LLM differentiation at present. In the future, it will be expanded to the integration of more modes such as audio, video, 3D data, etc. to provide more natural interaction and more complex unstructured data processing capabilities.
+
+#### The evolution and challenges of benchmarking
+
+- **From single to comprehensive**: Traditional single-task accuracy benchmarks are no longer sufficient to fully reflect the performance of models in practical applications.
+- **Agent Capability Evaluation**: Emerging benchmarks such as SWE-bench, ArenaHard, and BFCL focus more on evaluating the overall performance of LLM as an intelligent agent, emphasizing the ability of the model to work together with external tool chains.
+- **Simulating real-world environments**: Benchmarks such as RE-Bench and Multi-Mission Tool Bench are trying to simulate more dynamic and complex environments that require long-term planning and multi-task collaboration to comprehensively evaluate the reliability of models in complex workflows.
+- **Test optimization and actual deployment**: Some high scores may come from test optimization or "thinking mode" (Test-time Compute), which may be difficult to popularize in actual deployment due to high cost or high latency. Developers need to weigh the performance against actual benefits.
+
+---
+
+#### Analysis of popular LLM API models
+
 ##### OpenAI Series
 
-##### GPT-4.1 nano
+OpenAI offers a range of models that meet different needs from ultra-low latency to flagship intelligence, and are optimized for specific tasks.
 
-- **Positioning and Tasks**: Ultra-low latency and ultra-low cost, suitable for edge computing, lightweight Agent, and Webhook callback scenarios that require extremely high response speed.
-- **Cost-effectiveness analysis**: Only ¥0.00073/1k input, ¥0.00290/1k output, irreplaceable under millisecond-level interaction requirements.
-
-##### GPT-4.1 mini
-
-- **Positioning and Tasks**: A choice that balances intelligence and speed, suitable for medium-complexity customer service conversations, FAQ robots, and content review pipelines.
-- **Cost-effectiveness analysis**: ¥0.00290 /1k input, ¥0.01160 /1k output, slightly higher than nano but with significantly improved inference quality.
-
-##### GPT-4.1
-
-- **Positioning and Mission**: Flagship intelligence, oriented to long text understanding, legal/financial document analysis, and in-depth research report writing.
-- **Cost-effectiveness analysis**: ¥0.01450 /1k input, ¥0.05800 /1k output, suitable for core businesses with sufficient budget and quality priority.
-
-##### o3
-
-- **Localization and Tasks**: Top-notch multimodal reasoning models, good at code generation, mathematical proofs, scientific experiment design, and image understanding.
-- **Cost-effectiveness analysis**: The price is the same as GPT-4.1 (¥0.01450/¥0.05800), but it has obvious advantages in professional benchmarks (MATH, Codeforces, ImageNet).
-
-##### o4 mini
-
-- **Location and Task**: Lightweight reasoning players with strong math, coding and visual understanding skills, suitable for cost-sensitive complex tasks.
-- **Cost-effectiveness analysis**: ¥0.00798/1k input, ¥0.03190/1k output, ≈45% price reduction compared to o3, while still maintaining 80%+ performance.
+- **GPT-4.1 nano**:
+- **Positioning**: Ultra-low latency, ultra-low cost.
+- **Typical scenarios**: edge computing, lightweight agents, webhook callbacks, and other scenarios that require extremely high response speed.
+- **Cost-effectiveness**: **¥0.73/1M input, ¥2.90/1M output**, which has irreplaceable cost advantages under millisecond-level interaction requirements.
+- **GPT-4.1 mini**:
+- **Positioning**: Balance of intelligence and speed.
+- **Typical scenarios**: Medium-complexity customer service conversations, FAQ bots, content review pipelines.
+- **Price/performance**: **¥2.90/1M input, ¥11.60/1M output**, significantly improved inference quality, and slightly higher cost than nano.
+- **GPT-4.1**:
+- **Positioning**: flagship smartphone.
+- **Typical scenarios**: long text comprehension, legal/financial document analysis, and in-depth research report writing.
+- **Value for money**: **¥14.50 / 1M input, ¥58.00 / 1M output**, suitable for core businesses with sufficient budget and priority on quality.
+- **o3**:
+- **Localization**: Top multimodal reasoning models.
+- **Typical scenarios**: code generation, mathematical proof, scientific experiment design, and image understanding.
+- **Price/performance**: Same price as GPT-4.1 (**¥14.50 / 1M input, ¥58.00 / 1M output**), but shows clear advantages in professional benchmarks (such as MATH, Codeforces, ImageNet).
+- **o4-mini**:
+- **Positioning**: Lightweight inference model.
+- **Typical scenarios**: Cost-sensitive and complex tasks that require strong math, coding, and visual understanding capabilities.
+- **Price/performance**: **¥7.98 / 1M input, ¥31.90 / 1M output**, which is about 45% cheaper than o3, but still retains more than 80% of the performance.
 
 ---
 
 ##### Anthropic Claude Series
 
-##### Claude Haiku 3.5
+The Claude model is known for its outstanding performance across different performance and cost ranges, especially in handling complex conversations and multimodal content.
 
-- **Positioning and Task**: Extremely high-throughput, low-latency conversational model, designed for real-time customer service, content review, and fast summarization.
-- **Cost-effectiveness analysis**: ¥0.00580/1k input, ¥0.02900/1k output, which is continuously stable in high-concurrency scenarios.
-
-##### Claude Sonnet 4
-
-- **Positioning and tasks**: An enterprise-level balanced flagship, suitable for RAG, search recommendation, and multi-round hybrid text + chart analysis.
-- **Price/performance analysis**: ¥0.02180/1k input, ¥0.10875/1k output, providing high-quality experience for multi-modal and complex applications.
-
-##### Close Work 4
-
-- **Positioning and Mission**: Top thinker, focusing on cutting-edge research, strategic planning, cross-disciplinary comprehensive Q&A and creative writing.
-- **Cost-effectiveness analysis**: ¥0.10875/1k input, ¥0.54375/1k output, reserved only for the most demanding inference quality scenarios.
+- **Claude Haiku 3.5**:
+- **Positioning**: Extremely high throughput, low latency conversation model.
+- **Typical scenarios**: high-concurrency scenarios such as real-time customer service, content review, and quick summary.
+- **Cost-effectiveness**: **¥5.80 / 1M input, ¥29.00 / 1M output**, continuously stable in high-concurrency scenarios.
+- **Claude Sonnet 4**:
+- **Positioning**: Enterprise-level balanced flagship.
+- **Typical scenarios**: RAG (retrieval-augmented generation), search recommendation, and multi-round mixed text and graph analysis.
+- **Price/performance**: **¥21.80 / 1M input, ¥108.75 / 1M output**, providing a high-quality experience for multi-modal and complex applications.
+- **Close Work 4**:
+- **Positioning**: Top thinker.
+- **Typical scenarios**: cutting-edge research, strategic planning, cross-disciplinary comprehensive Q&A and creative writing.
+- **Price/performance**: **¥108.75 / 1M input, ¥543.75 / 1M output**, reserved for the most demanding inference quality scenarios.
 
 ---
 
 ##### Google Gemini Series
 
-##### Gemini 2.5 Flash Preview
+The Gemini series emphasizes multi-modal processing capabilities and performance balance at different cost-effectiveness.
 
-- **Location and Task**: Low-cost long context + hybrid reasoning, supporting text/image/video/audio input, suitable for large-scale batch multimodal pipelines.
-- **Cost-effectiveness analysis**: ¥0.00109/1k input, ¥0.00435/1k non-inference output, ¥0.02538/1k inference output, the optimal throughput cost.
-
-##### Gemini 2.5 Pro
-
-- **Location and Task**: The flagship of multimodal deep reasoning, supporting complex document understanding, code auditing, cross-media search and RAG.
-- **Cost-effectiveness analysis**: ¥0.00906–¥0.01813 /1k input, ¥0.07250–¥0.10875 /1k output, unique pricing supports dynamic segmentation, taking into account short/long prompts.
+- **Gemini 2.5 Flash Preview**:
+- **Positioning**: Low-cost long context and hybrid reasoning capabilities.
+- **Typical scenario**: Large-scale batch multimodal pipeline, supporting text, image, video, and audio input.
+- **Price/performance**: **¥1.09 / 1M input, ¥4.35 / 1M non-inference output, ¥25.38 / 1M inference output**, providing the best throughput cost.
+- **Gemini 2.5 Pro**:
+- **Positioning**: The flagship of multimodal deep reasoning.
+- **Typical scenarios**: complex document understanding, code auditing, cross-media search and RAG.
+- **Value for money**:
+- Input: **¥9.06 / 1M (context length ≤200K)**, **¥18.13 / 1M (context length >200K)**
+- Output: **¥72.50 / 1M (context length ≤200K)**, **¥108.75 / 1M (context length >200K)**
 
 ---
 
 ##### DeepSeek Series
 
-##### DeepSeek-V3
+The DeepSeek model has attracted attention for its high cost-effectiveness and enhanced capabilities in complex reasoning.
 
-- **Positioning and Task**: Cost-effective general Chinese MoE, suitable for article generation, summarization and general knowledge question and answering.
-- **Cost-effectiveness analysis**: ¥0.00200/1k input, ¥0.00800/1k output for a miss; reduced to ¥0.00051 for a cache hit, significantly saving the cost of repeated queries.
-
-##### DeepSeek-R1
-
-- **Positioning and Tasks**: An enhanced version for complex reasoning, optimized for technical document analysis, scientific research assistance, and rigorous logical reasoning scenarios.
-- **Cost-effectiveness analysis**: ¥0.00400 /1k input, ¥0.01600 /1k output, performance improvement to match professional needs.
-
----
-
-##### Alibaba Cloud Qwen Series
-
-##### Thousand Questions on Tongyi-Max
-
-- **Positioning and Mission**: Flagship complex task expert, focusing on financial auditing, legal compliance, and in-depth analysis of scientific research literature.
-- **Cost-effectiveness analysis**: ¥0.0024/1k input, ¥0.0096/1k output, achieving top-level model capabilities at a very low cost.
-
-##### Tongyi Qianwen-Plus
-
-- **Positioning and Tasks**: A balanced all-around model suitable for most mixed business scenarios—dialogue, summary, classification, RAG.
-- **Cost-effectiveness analysis**: ¥0.0008/1k input, ¥0.0020/1k output, it is the most widely used "preferred base" in China.
-
-##### Tongyi Qianwen-Turbo
-
-- **Positioning and tasks**: An extremely fast and low-cost pipeline player, suitable for high-concurrency log decomposition, indicator extraction, and structured field extraction.
-- **Cost-effectiveness analysis**: ¥0.0003/1k input, ¥0.0006/1k output, the lowest unit cost among all business models.
-
-##### Thousand Questions on Tongyi-Long
-
-- **Positioning and Tasks**: An expert in processing very long texts, supporting 10M Tokens, and specially designed for building indexes and full-text retrieval for large-scale documents.
-- **Cost-effectiveness analysis**: ¥0.0005/1k input, ¥0.0020/1k output, solving ultra-large contexts with the lowest cost.
+- **DeepSeek-V3**:
+- **Positioning**: Cost-effective Chinese general MoE (Mixed of Experts) model.
+- **Typical scenarios**: article generation, summarization, and general knowledge question answering.
+- **Cost-effectiveness**: **¥2.00 / 1M input, ¥8.00 / 1M output**; when the cache hits, the price drops to **¥0.51 / 1M**, which greatly saves the cost of repeated queries.
+- **DeepSeek-R1**:
+- **Positioning**: Complex reasoning enhanced version.
+- **Typical scenarios**: technical document analysis, scientific research assistance, and rigorous logical reasoning.
+- **Cost-effective**: **¥4.00 / 1M input, ¥16.00 / 1M output**, performance improvement to match professional needs.
 
 ---
 
-#### Baidu Qianfan ERNIE series
+##### Alibaba Cloud Qwen series
 
-##### ERNIE Speed / Lite
+Tongyi Qianwen series provides comprehensive solutions from extremely fast and low-cost to ultra-long text processing, and is particularly competitive in the domestic market.
 
-- **Positioning and tasks**: Zero-cost entry, suitable for PoC, developer learning, and lightweight batch text processing.
-- **Cost-effectiveness analysis**: Permanently free, no token restrictions, the first choice for trial and error and learning.
+- **Tongyi Qianwen-Max**:
+- **Position**: Flagship complex mission expert.
+- **Typical scenarios**: financial auditing, legal compliance, and in-depth analysis of scientific research literature.
+- **Price/performance**: **¥2.40 / 1M input, ¥9.60 / 1M output**, achieving top-level model capabilities at a very low cost.
+- **Tongyi Qianwen-Plus**:
+- **Position**: Balanced all-round model.
+- **Typical scenarios**: Most mixed business scenarios, such as conversation, summary, classification, RAG.
+- **Cost-effective**: **¥0.80 / 1M input, ¥2.00 / 1M output**, it is considered to be the most widely used "preferred base" in China.
+- **Turbo**:
+- **Positioning**: An extremely fast and low-cost assembly line player.
+- **Typical scenarios**: high-concurrency log decomposition, indicator extraction, and structured field extraction.
+- **Cost-effectiveness**: **¥0.30 / 1M input, ¥0.60 / 1M output**, the lowest unit cost option in the commercial model.
+- **Tongyi Qianwen-Long**:
+- **Position**: Expert in processing extremely long texts.
+- **Typical scenarios**: Large-scale document indexing and full-text retrieval, supporting 10M Tokens context.
+- **Cost-effective**: **¥0.50 / 1M input, ¥2.00 / 1M output**, solving the needs of large context processing at the lowest cost.
 
-##### ERNIE 4.5 Turbo
+---
 
-- **Positioning and Mission**: Cost-effective enterprise-level general workhorse, supporting tool calls, plug-ins, and RAG processes.
-- **Price/performance analysis**: ¥0.00080 /1k input, ¥0.00320 /1k output, providing professional-level features at a price close to free.
+##### Baidu Qianfan ERNIE series
 
-##### ERNIE 4.5
+Baidu's ERNIE series focuses on Chinese multimodal capabilities and provides a free entry option.
 
-- **Positioning and Mission**: Chinese multimodal flagship, good at image + text, long document understanding, and cultural context analysis.
-- **Cost-effectiveness analysis**: ¥0.00400/1k input, ¥0.01600/1k output, providing leading results for core Chinese scenarios.
+- **ERNIE Speed / Lite**:
+- **Positioning**: Zero cost to get started.
+- **Typical scenarios**: PoC (proof of concept), developer learning, lightweight batch text processing.
+- **Cost-effectiveness**: **Permanently free**, no token restrictions, an ideal choice for trial and error and learning.
+- **ERNIE 4.5 Turbo**:
+- **Positioning**: Cost-effective enterprise-level general working model.
+- **Typical scenarios**: Support tool calls, plug-ins, and RAG processes.
+- **Value for money**: **¥0.80 / 1M input, ¥3.20 / 1M output**, providing professional-level features at a price close to free.
+- **ERNIE 4.5**:
+- **Positioning**: Chinese multimodal flagship.
+- **Typical scenarios**: image + text understanding, long document understanding, and cultural context analysis.
+- **Cost-effective**: **¥4.00 / 1M input, ¥16.00 / 1M output**, providing leading results for core Chinese scenarios.
 
 ---
 
 ##### Tencent Cloud Hunyuan Series
 
-##### Hunyuan-lite
+Tencent Hunyuan series provides multiple models from free to trillion-parameter flagship, achieving a balance between performance and cost.
 
-- **Positioning and Mission**: Permanently free long context, suitable for PoC, education and large-scale basic services.
-- **Cost-Effectiveness Analysis**: ¥0.00000 /1k, extremely cost-effective; but the reasoning depth is not as good as the flagship version.
-
-##### Hunyuan-TurboS
-
-- **Positioning and Mission**: Flagship with trillion parameters, high-concurrency intelligent question-answering and document parsing.
-- **Cost-effectiveness analysis**: 1 million tokens are free in the first month, ¥0.00080/1k input, ¥0.00200/1k output, taking into account both cost and performance.
-
-##### Hunyuan-T1
-
-- **Positioning and tasks**: General main model, oriented to complex conversations, full document understanding, and intelligent recommendations.
-- **Cost-effectiveness analysis**: ¥0.00100 /1k input, ¥0.00400 /1k output, it is the "economic flagship" of the Hunyuan series.
+- **Hunyuan-lite**:
+- **Positioning**: Permanently free long-context model.
+- **Typical scenarios**: PoC, education, and large-scale basic services.
+- **Cost-effectiveness**: **¥0.00 / 1M**, extremely cost-effective, and the inference depth is slightly lower than the flagship model.
+- **Hunyuan-TurboS**:
+- **Positioning**: Trillion-parameter flagship.
+- **Typical scenarios**: High-concurrency intelligent question-answering and document parsing.
+- **Cost-effectiveness**: 1 million tokens are free in the first month, and **¥0.80/1M input, ¥2.00/1M output** thereafter, taking into account both cost and performance.
+- **Hunyuan-T1**:
+- **Position**: General main model.
+- **Typical scenarios**: complex conversations, full document understanding, and intelligent recommendations.
+- **Cost-effective**: **¥1.00 / 1M input, ¥4.00 / 1M output**, it is the "economic flagship" of the Hunyuan series.
 
 ---
 
 Mistral AI Series
 
-##### Mistral Small 3.1
+Mistral AI models are recognized for their efficiency and expertise in coding, STEM fields.
 
-- **Location and Task**: A lightweight multilingual assistant suitable for basic tasks such as translation, summarization, and classification.
-- **Cost-effectiveness analysis**: ¥0.00073 /1k input, ¥0.00218 /1k output, the startup cost is extremely low.
-
-##### Mistral Medium 3
-
-- **Position and Task**: Coding and STEM domain expert, often used in technical documentation generation and analysis.
-- **Performance-price ratio analysis**: ¥0.00290 /1k input, ¥0.01450 /1k output, the performance is close to the flagship but the price is better.
-
-##### Mistral Large 2
-
-- **Localization and Tasks**: Open source flagship contender, suitable for the most demanding multimodal and complex reasoning tasks.
-- **Cost-effectiveness analysis**: ¥0.02900 /1k input, ¥0.08700 /1k output, providing a free alternative for teams that need top-notch capabilities.
+- **Mistral Small 3.1**:
+- **Positioning**: Lightweight multilingual assistant.
+- **Typical scenarios**: basic tasks such as translation, summarization, and classification.
+- **Cost-effectiveness**: **¥0.73 / 1M input, ¥2.18 / 1M output**, extremely low startup cost.
+- **Mistral Medium 3**:
+- **Position**: Coding and STEM field expert.
+- **Typical scenario**: Technical document generation and analysis.
+- **Value for money**: **¥2.90 / 1M input, ¥14.50 / 1M output**, performance close to the flagship but at a better price.
+- **Mistral Large 2**:
+- **Positioning**: Open source flagship competitor.
+- **Typical scenarios**: the most demanding multimodal and complex reasoning tasks.
+- **Value for money**: **¥29.00 / 1M input, ¥87.00 / 1M output**, providing a free alternative for teams that need top-notch capabilities.
 
 ---
 
 ##### Cohere Series
 
-##### Command R7B
+The Cohere model focuses on RAG and Agentic AI, providing solutions optimized for retrieval and tool invocation.
 
-- **Positioning & Mission**: Lightweight RAG prototype build, lowest cost test model.
-- **Price/performance analysis**: ¥0.00027 /1k input, ¥0.00109 /1k output, an ideal choice for building RAG PoC.
-
-##### Command R
-
-- **Positioning and tasks**: General enterprise-level RAG, suitable for knowledge base question answering and intelligent search.
-- **Cost-effectiveness analysis**: ¥0.00109/1k input, ¥0.00435/1k output, balancing performance and cost.
-
-##### Command A
-
-- **Location and Task**: Dedicated to Agentic AI, supporting multi-step tool calls and complex business processes.
-- **Cost-effectiveness analysis**: ¥0.01813/1k input, ¥0.07250/1k output, providing exclusive optimization for complex Agent processes.
+- **Command R7B**:
+- **Position**: Lightweight RAG prototype build.
+- **Typical scenario**: Lowest cost RAG test model.
+- **Price/performance**: **¥0.27/1M input, ¥1.09/1M output**, ideal for building RAG PoC.
+- **Command R**:
+- **Positioning**: General-purpose enterprise-level RAG.
+- **Typical scenarios**: knowledge base question and answer, intelligent search.
+- **Cost-effective**: **¥1.09 / 1M input, ¥4.35 / 1M output**, balancing performance and cost.
+- **Command A**:
+- **Positioning**: Agentic AI only.
+- **Typical scenarios**: Support multi-step tool calls and complex business processes.
+- **Cost-effective**: **¥18.13 / 1M input, ¥72.50 / 1M output**, providing exclusive optimization for complex Agent processes.
 
 ---
 
 ##### Volcengine
 
-##### Doubao-pro-32k
-
-- **Positioning and Mission**: C-end large-scale content generation engine, suitable for social, recommendation, and creation platforms.
-- **Cost-effectiveness analysis**: ¥0.00080/1k input, ¥0.00200/1k output, achieving extremely low cost under large traffic.
+- **Doubao-pro-32k**:
+- **Positioning**: C-end large-scale content generation engine.
+- **Typical scenarios**: social, recommendation, and creation platforms.
+- **Cost-effective**: **¥0.80 / 1M input, ¥2.00 / 1M output**, achieving extremely low cost under large traffic.
 
 ---
 
 ##### OpenRouter third-party aggregation platform
 
-##### Llama 3.3 70B（OpenRouter）
-
-- **Positioning and Mission**: Open source flagship "one-click trial", no need to deploy by yourself.
-- **Cost-effectiveness analysis**: ¥0.00051/1k input, ¥0.00181/1k output, with convenience as the core value, suitable for PoC and small-scale experiments.
-
-#### 5.1.3 Detailed description
-
-- **Cost Model**
-
-- Billing is based on input/output token usage, without the need for upfront infrastructure investment.
-- In the early stage, when the call volume is low, the cost is negligible (free quota can be used); as the call volume increases linearly, the cost rises rapidly.
-- Cache input pricing and volume discounts: Many providers offer significant discounts for cache input and batch processing, which can effectively reduce the cost of repetitive tasks. For example, Alibaba Cloud Qwen series can halve the batch processing fee, and cache tokens are charged at 40% of the input cost. DeepSeek's cache hit price is much lower than the cache miss price.
-- If the monthly call volume reaches hundreds of millions or more, it is necessary to evaluate the turning point of API cost and self-hosting cost in advance.
-
-- **Online speed and deployment complexity**
-
-- Simply apply for a key to call, easy integration; no need to worry about underlying model deployment, operation and maintenance, capacity expansion, etc., the service provider is responsible for high availability.
-- Suitable for quick verification of scenarios and iterative prompts, saving team human resources.
-
-- **Function support (RAG/Agent/Embedding)**
-
-- Basic text/dialogue generation and Embedding interfaces: All mainstream APIs are provided.
-- Function Calling: Supports multiple model services, allowing LLM to interact with external systems and data.
-- Built-in tools: Some service providers provide tools such as code interpreters, file searches, and web searches.
-- RAG support: Developers need to integrate the vector database by themselves or with the help of the framework to implement RAG; some platforms have optimized RAG.
-- Multimodal capabilities: Multiple flagship models support image, audio, and video processing.
-
-- **Free Quota**
-
-- International manufacturers: The free quota is limited and mostly depends on startup or project applications; there are rate/usage restrictions.
-- Domestic manufacturers: often have free or low-price strategies, such as some free models and free token quotas.
-
-- **Compliance**
-
-- Cross-border data and regulatory risks: International APIs pose risks in the domestic production environment and should not be directly used for formal services for domestic users.
-- Domestic compliance: Domestic APIs have completed algorithm filing and built-in review mechanisms, and data is stored domestically, making them suitable for use in the Chinese market. If processing highly sensitive data, it is necessary to assess whether private deployment or additional security measures are required.
-- Data usage policy: Most providers state that customer data will not be used to train their underlying models.
-
-- **Model Value and Evaluation**
-
-- General Intelligence: Several flagship models lead in general benchmarks. DeepSeek-V3 performs well in relevant tests.
-- Chinese processing: Some Chinese models perform well in Chinese understanding and reasoning, especially in multiple benchmark tests.
-- Encoding capabilities: Several models performed well on encoding benchmarks.
-- Multimodal capabilities: Several flagship models have powerful image, audio, and video processing capabilities.
-- Long context understanding: Many models support context windows of millions or even tens of millions of tokens, which is suitable for processing very long documents.
-- Cost-effectiveness: Some low-priced or free models offer near-flagship performance, making them ideal for cost-sensitive scenarios.
-
-- **Typical scenario**
-
-- Innovative products, internal tools, research projects for overseas markets; or early rapid demonstration and verification.
-- RAG scenarios can be combined with their own vector libraries; if the scale and compliance requirements increase in the future, alternative paths need to be planned in advance.
+- **Llama 3.3 70B（OpenRouter）**:
+- **Positioning**: Open source flagship "one-click trial".
+- **Typical scenario**: Quickly conduct PoC and small-scale experiments without self-deployment.
+- **Cost-effectiveness**: **¥0.51 / 1M input, ¥1.81 / 1M output**, with convenience as the core value.
 
 ---
+
+#### General considerations for API services
+
+Choosing the right LLM API requires not only considering model performance, but also comprehensively considering factors such as cost, deployment, feature support, and compliance.
+
+##### Cost Model
+
+- **Pay by usage**: Billing is mainly based on input/output token usage, without the need for upfront infrastructure investment.
+- **Cost curve**: In the early stage, when the call volume is low, the cost is negligible (there is often free quota); as the call volume increases linearly, the cost rises rapidly.
+- **Optimization strategy**: Many providers offer significant discounts for cache input and batch processing, which can effectively reduce the cost of repetitive tasks (e.g. batch processing of Alibaba Cloud Qwen series and cache hit price of DeepSeek).
+- **Self-hosting inflection point**: When the monthly call volume reaches hundreds of millions, it is necessary to evaluate the critical point between API call cost and self-hosting cost in advance.
+
+##### Speed ​​of launch and deployment complexity
+
+- **Simple deployment**: Just apply for an API Key to make the call, easy integration.
+- **Operation and maintenance free**: No need to worry about the deployment, operation and maintenance, and capacity expansion of the underlying model, the service provider is responsible for high availability.
+- **Fast iteration**: Suitable for fast verification scenarios and prompt iterations, saving team human resources.
+
+###### Feature Support (RAG/Agent/Embedding)
+
+- **Basic Services**: All mainstream APIs provide basic text/dialogue generation and Embedding interfaces.
+- **Tool Calling**: Most mainstream model services support Function Calling, allowing LLM to interact with external systems and data.
+- **Built-in tools**: Some service providers provide built-in code interpreters, file searches, web searches and other tools.
+- **RAG support**: Developers usually need to integrate a vector database themselves or with the help of a framework to implement RAG, but some platforms have optimized the RAG process.
+- **Multimodal capabilities**: Multiple flagship models support image, audio, and video processing capabilities.
+
+##### Free quota
+
+- **International manufacturers**: The free quota is usually limited, mostly depends on startup or project applications, and has rate/usage restrictions.
+- **Domestic manufacturers**: often have more generous free or low-price strategies, such as permanent free models and free token quotas.
+
+##### Compliance
+
+- **Cross-border data and supervision**: There are cross-border data and regulatory risks when using international APIs in the production environment of mainland China, and they should not be directly used for formal services for domestic users.
+- **Domestic Compliance**: Domestic APIs have completed algorithm filing, built-in review mechanisms, and data is stored domestically, making them more suitable for Chinese market applications. If highly sensitive data is processed, additional assessment is still required as to whether private deployment or higher-level security measures are required.
+- **Data Usage Policy**: Most providers state that customer data will not be used to train their underlying models, but you should still carefully review their data policies when choosing.
+
+##### Model Value and Evaluation
+
+- **General Intelligence**: Several flagship models lead in general benchmarks. DeepSeek-V3 performs well in relevant tests.
+- **Chinese processing**: Some Chinese models perform well in Chinese understanding and reasoning, especially in multiple benchmarks.
+- **Encoding ability**: Many models perform well in encoding benchmarks.
+- **Long context understanding**: Many models support context windows of millions or even tens of millions of tokens, which is suitable for processing very long documents.
+- **Price/performance**: Some low-priced or free models offer near-flagship performance, making them ideal for cost-sensitive scenarios.
+
+##### Typical scenarios
+
+- **For overseas markets**: International API is suitable for innovative products, internal tools, research projects, or early rapid demonstration and verification for overseas markets.
+- **RAG Application**: API can be combined with your own vector library to build RAG scenarios.
+- **Scale and compliance considerations**: If the business scale expands or compliance requirements increase in the future, it will be necessary to plan alternative paths in advance, which may include turning to private deployment or replacing domestic compliance service providers.
 
 ### 5.2. Analysis of cloud-hosted inference solutions
 
@@ -583,7 +704,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 - **Billing model**: Billing is based on storage capacity (GB/month), data transfer volume, and number of requests.
 - **Estimate**:
 
-- **Object storage**: For GB-level RAG data, the monthly cost is usually several dollars to tens of dollars (tens to hundreds of RMB); if massive multimedia is stored, the cost will rise sharply.
+- **Object storage**: For GB-level RAG data, the monthly cost is usually several US dollars to tens of US dollars (tens to hundreds of RMB); if massive multimedia is stored, the cost will rise sharply.
 - **Vector database**: Depending on the vector dimension, index scale and QPS, it may cost tens to hundreds of US dollars (hundreds to thousands of RMB) per month; large-scale enterprise-level deployments can cost thousands of dollars or more.
 - **Database instance**: Based on instance specifications, storage, and read/write load, ranging from tens to thousands of dollars per month.
 
@@ -598,7 +719,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 3. **Calculate service fees (Agent tool calls, custom logic)**
 
-- **Purpose**: Implement Agent tool calls, API integration, data pre-processing/post-processing, user authentication and other custom logic.
+- **Purpose**: Implement custom logic such as Agent tool calls, API integration, data pre-processing/post-processing, user authentication, etc.
 - **Main services**: Serverless Functions (Lambda, Azure Functions, Cloud Functions), Lightweight Container Service, VM/Kubernetes.
 - **Billing model**: Billing is based on the number of calls, execution time (GB-seconds), and memory configuration; containers/VMs are billed based on instance specifications.
 - **Estimate**:
@@ -659,7 +780,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 | LangChain          | Development framework (open source library) | Modular construction of complex LLM applications such as RAG, Agent, tool calls, etc.           | Senior developers                           | Free open source, the cost comes from LLM API calls and server resources                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | ✅ Active community, rich ecology; ❌ Steep learning curve, complex state management                                                               |
 | LlamaIndex         | Development framework (open source library) | LLM connects to external data, RAG, Agentic RAG                                                 | Developers, researchers                     | Free open source, cost is similar to LangChain                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | ✅ Wide data access and good retrieval performance; ❌ Complex concepts, need to master the framework design concept                               |
 | CrewAI             | Agent Framework (Open Source Library)       | Multi-agent collaboration framework, supports RAG and Agent division of labor                   | Senior developers, researchers              | Free open source, running costs are the same as LangChain                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | ✅ Clear abstraction, suitable for team-based agents; ❌ Limited customization, scarce documentation                                               |
-| AutoGen            | Agent Framework (open source library)       | Microsoft product, supports multi-agent dialogue, code execution                                | Researchers, scientific research developers | Free open source, running costs are the same as above                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | ✅ Powerful communication model, suitable for scientific research exploration; ❌ Limited tools, cumbersome deployment                             |
+| AutoGen            | Agent Framework (open source library)       | Microsoft product, supports multi-agent dialogue, code execution                                | Researchers, scientific research developers | Free open source, running costs are the same                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | ✅ Powerful communication model, suitable for scientific research exploration; ❌ Limited tools, cumbersome deployment                             |
 | Flowise            | Workflow platform (open source self-hosted) | Visual drag-and-drop process orchestration, support for Agentic RAG, multi-tool integration     | Automation developers                       | Completely free and open source, a commercial version may be launched in the future                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | ✅ User-friendly and rich in components; ❌ Slightly less flexible, complex scenarios still require code support                                   |
 
 #### 5.3.2 Detailed description
@@ -668,7 +789,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 - **Visual Application Orchestration**
 
-- Drag-and-drop or low-code UI: Configure the RAG pipeline (document upload → Embedding generation → Vector retrieval → Prompt combination → Model call → Result output) and multi-step Agent workflow through a graphical interface.
+- Drag-and-drop or low-code UI: Configure RAG pipelines (document upload → Embedding generation → Vector retrieval → Prompt combination → Model call → Result output) and multi-step Agent workflows through a graphical interface.
 - Support conditional branching and looping: You can add conditional judgments in process nodes to implement complex logic (such as routing different sub-processes based on search results).
 - Debug panel: You can view the intermediate data of each step (such as Embedding vector dimensions, search result summary, Prompt content) in real time to facilitate problem location.
 
@@ -872,7 +993,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 - **Deployment complexity**
 
 - Mainly self-hosted: Currently, open source versions are mainly used, with no cloud hosting services (or not yet publicly available); deployment requires deep infrastructure configuration (high-performance computing nodes, distributed storage, memory and disk optimization).
-- High resource requirements: Large-scale document processing and deep semantic understanding have high requirements for CPU/GPU, memory, and disk IO, and require the team to have mature operation and optimization capabilities.
+- High resource requirements: Large-scale document processing and deep semantic understanding have high requirements for CPU/GPU, memory, and disk IO, and require the team to have mature operation, maintenance, and optimization capabilities.
 - Clusterable: Supports distributed deployment, distributing indexing and retrieval loads to multiple nodes; cluster communication, load balancing, and fault recovery need to be configured by yourself.
 
 - **Integration capabilities**
@@ -1125,7 +1246,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 - **Difficulty of use**
 
-- Low threshold: Non-technical personnel can also quickly build prototypes; technical personnel can expand functions by customizing nodes.
+- Low threshold: Non-technical personnel can also quickly build prototypes; technical personnel can expand functions through custom nodes.
 - Low learning cost: intuitive interface, less need to write code; suitable for early verification or business teams to independently build lightweight applications.
 
 - **Typical scenario**
@@ -1152,8 +1273,8 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 | Platform        | NVIDIA A100 80GB ¥/h (USD) | NVIDIA T4 16GB ¥/h (USD)  | Notes                                                                                                                                                                                                                                                                                                                                                               |
 | --------------- | -------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Thunder Compute | 5.66 (0.78)                | 1.96 (0.27)               | Emerging platform, supported by Y Combinator; highly competitive on-demand pricing, suitable for short-term experiments and elastic expansion; quotas must be applied for in advance and availability zone coverage must be verified; enterprise-level SLA, network bandwidth, and support capabilities require additional evaluation.                              |
-| TensorDock      | 6.89 (0.95)                | —                         | Provides A100 instances and has H100 options (about $2.25/h); supports Spot instances to further reduce costs; suitable for multi-model demand scenarios; needs to pay attention to preemption interruption risks, instance availability, and network/storage performance.                                                                                          |
+| Thunder Compute | 5.66 (0.78)                | 1.96 (0.27)               | Emerging platform, supported by Y Combinator; competitive on-demand pricing, suitable for short-term experiments and elastic expansion; quotas must be applied for in advance and availability zone coverage must be verified; enterprise-level SLA, network bandwidth, and support capabilities require additional evaluation.                                     |
+| TensorDock      | 6.89 (0.95)                | —                         | Provides A100 instances and has H100 options (about $2.25/h); supports Spot instances to further reduce costs; suitable for scenarios with multiple model requirements; needs to pay attention to preemption interruption risks, instance availability, and network/storage performance.                                                                            |
 | Alibaba Cloud   | —                          | Starting from 2.00 (0.28) | Suitable for lightweight reasoning and testing; A100 80GB requires special quota and is often out of stock                                                                                                                                                                                                                                                          |
 | Tencent Cloud   | —                          | 13.89 (1.92)              | T4 is moderately priced and easy to integrate with the domestic ecosystem;                                                                                                                                                                                                                                                                                          |
 | RunPod          | 8.63 (1.19)                | —                         | Community GPU cloud, A100 80GB, low to medium pricing; provides "secure cloud" option (need to confirm the specific GPU model); suitable for personal development and small team testing; production environment needs to evaluate stability, technical support and data security strategy.                                                                         |
@@ -1235,7 +1356,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 **illustrate:**
 
-- Year 1 (PoC/Beta early stage): Pure API has the lowest cost, mainly using free quotas; cloud hosting requires reserved infrastructure and monitoring; self-hosting requires purchasing/renting GPUs and investing in operation and maintenance, which has the highest cost.
+- Year 1 (PoC/Beta): Pure API has the lowest cost, mainly using free quotas; cloud hosting requires reserved infrastructure and monitoring; self-hosting requires purchasing/renting GPUs and investing in operation and maintenance, which has the highest cost.
 - Year 2 (Beta→ Initial Scale): Pure API costs increased significantly; cloud hosting can control costs through discounts and elastic expansion; self-hosting expands clusters and recruits MLOps personnel, costs increase but unit costs decrease.
 - Year 3 (Scale): Pure API costs range from hundreds of thousands to millions; cloud hosting is still expensive at high scale; hybrid strategies show advantages with self-hosting, and the total TCO is more controllable; pure self-hosting has the lowest cost after large-scale, but the initial investment and risk are greater.
 - Inflection point analysis: When the monthly call volume exceeds hundreds of millions of tokens, the unit cost of self-custody begins to be lower than that of API, and advance planning is required. The hybrid solution can smoothly transition and switch in stages to alleviate cash flow pressure.
@@ -1380,7 +1501,7 @@ Scale Phase (8–18 months)
 
 - After obtaining cloud vendor credits, migrate to cloud-hosted inference services and deploy them in compliant areas; integrate vector databases to build enterprise-level RAGs to handle medium concurrency and real business scenarios.
 - Conduct A/B testing: Use self-hosting or lightweight open source models for some requests to evaluate output quality and cost and accumulate self-hosting experience.
-- Improve compliance and security: build input and output two-way filtering, log auditing and manual review processes, and prepare algorithm filing materials.
+- Improve compliance and security: build input and output two-way filtering, log audit and manual review processes, and prepare algorithm filing materials.
 
 **Long-term strategy (Next 6-12 Months)**
 
