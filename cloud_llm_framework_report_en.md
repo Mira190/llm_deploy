@@ -141,7 +141,7 @@ In order to achieve a scientific and transparent selection process, a quantitati
 - **High Level**: Up to $150,000 (approximately ¥1.0875 million), automatically renewed by using an activity scoring system.
 - **Features**:
 - No VC recommendation required, self-service online application, fast review.
-- Participation score: About 45 days before the quota expires, an assessment will be automatically made to determine whether to renew or increase the quota based on your Azure service usage activity.
+- Engagement score: About 45 days before the credit expires, we will automatically evaluate whether to renew or increase your credit based on your Azure service usage activity.
 - Credits can be used for various Azure services, including Azure OpenAI, storage, computing, databases, etc.
 - **Application website:** https://www.microsoft.com/en-us/startups
 
@@ -201,7 +201,7 @@ In order to achieve a scientific and transparent selection process, a quantitati
 #### Baidu Qianfan Entrepreneur Program
 
 - **Totally Free Strategy**: ERNIE Speed/Lite models are completely free for all users to use, with no usage restrictions.
-- **Enterprise Special Quota**: After enterprise certification, you can apply for a free quota of 50 million Tokens of the ERNIE3.5 flagship model for use in production or testing environments.
+- **Enterprise Special Quota**: After enterprise certification, you can apply for a free quota of 50 million Tokens of ERNIE3.5 flagship model for use in production or testing environments.
 - **How ​​to apply**:
 - Register a Baidu Smart Cloud account and complete enterprise real-name authentication.
 - Receive basic free quota on the Qianfan platform free activation page; submit enterprise information to apply for special quota.
@@ -250,7 +250,7 @@ In order to achieve a scientific and transparent selection process, a quantitati
 
 ### 5.1 International/Domestic Third-Party API
 
-### 5.1.1 Pricing Overview
+### 5.1.1 Pricing at a Glance
 
 | Platform / Model                      | Context Window | **Input ¥ / 1M tokens** | **Output ¥ / 1M tokens**                       | Features and Model Value                                                                                                          |
 | ------------------------------------- | -------------- | ----------------------- | ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
@@ -401,7 +401,7 @@ The following table summarizes the latest performance of the main LLM APIs on th
 #### The evolution and challenges of benchmarking
 
 - **From single to comprehensive**: Traditional single-task accuracy benchmarks are no longer sufficient to fully reflect the performance of models in practical applications.
-- **Agent Capability Evaluation**: Emerging benchmarks such as SWE-bench, ArenaHard, and BFCL focus more on evaluating the overall performance of LLM as an intelligent agent, emphasizing the ability of the model to work together with external tool chains.
+- **Agent capability evaluation**: Emerging benchmarks such as SWE-bench, ArenaHard, and BFCL focus more on evaluating the overall performance of LLM as an intelligent agent, emphasizing the ability of the model to work together with external tool chains.
 - **Simulating real-world environments**: Benchmarks such as RE-Bench and Multi-Mission Tool Bench are trying to simulate more dynamic and complex environments that require long-term planning and multi-task collaboration to comprehensively evaluate the reliability of models in complex workflows.
 - **Test optimization and actual deployment**: Some high scores may come from test optimization or "thinking mode" (Test-time Compute), which may be difficult to popularize in actual deployment due to high cost or high latency. Developers need to weigh the performance against actual benefits.
 
@@ -892,7 +892,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 - **Multi-language and localization**
 
 - Interface/document multi-language support: The interface is usually available in Chinese/English, with a low operating threshold; prompt templates or examples contain Chinese and English versions, which is convenient for domestic teams to use.
-- Model effect: Good support for Chinese text, free or low-level models are sufficient for simple question-answering; high-level models are recommended for complex business scenarios, but credits consumption and costs need to be evaluated.
+- Model effect: Good support for Chinese text. Free or low-level models are sufficient for simple question-answering. High-level models are recommended for complex business scenarios, but credits consumption and costs need to be evaluated.
 
 - **Typical application scenarios**
 
@@ -1246,7 +1246,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 - **Difficulty of use**
 
-- Low threshold: Non-technical personnel can also quickly build prototypes; technical personnel can expand functions through custom nodes.
+- Low threshold: Non-technical personnel can also quickly build prototypes; technical personnel can expand functions by customizing nodes.
 - Low learning cost: intuitive interface, less need to write code; suitable for early verification or business teams to independently build lightweight applications.
 
 - **Typical scenario**
@@ -1273,7 +1273,7 @@ In addition to the basic model inference and dedicated resource costs, the total
 
 | Platform        | NVIDIA A100 80GB ¥/h (USD) | NVIDIA T4 16GB ¥/h (USD)  | Notes                                                                                                                                                                                                                                                                                                                                                               |
 | --------------- | -------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Thunder Compute | 5.66 (0.78)                | 1.96 (0.27)               | Emerging platform, supported by Y Combinator; competitive on-demand pricing, suitable for short-term experiments and elastic expansion; quotas must be applied for in advance and availability zone coverage must be verified; enterprise-level SLA, network bandwidth, and support capabilities require additional evaluation.                                     |
+| Thunder Compute | 5.66 (0.78)                | 1.96 (0.27)               | Emerging platform, supported by Y Combinator; highly competitive on-demand pricing, suitable for short-term experiments and elastic expansion; quotas must be applied for in advance and availability zone coverage must be verified; enterprise-level SLA, network bandwidth, and support capabilities require additional evaluation.                              |
 | TensorDock      | 6.89 (0.95)                | —                         | Provides A100 instances and has H100 options (about $2.25/h); supports Spot instances to further reduce costs; suitable for scenarios with multiple model requirements; needs to pay attention to preemption interruption risks, instance availability, and network/storage performance.                                                                            |
 | Alibaba Cloud   | —                          | Starting from 2.00 (0.28) | Suitable for lightweight reasoning and testing; A100 80GB requires special quota and is often out of stock                                                                                                                                                                                                                                                          |
 | Tencent Cloud   | —                          | 13.89 (1.92)              | T4 is moderately priced and easy to integrate with the domestic ecosystem;                                                                                                                                                                                                                                                                                          |
